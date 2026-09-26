@@ -67,3 +67,15 @@ End every substantial run with three headings: **Blocked on me**, **Changed**, *
 Follow the exclusions in `wiki-interest/docs/decisions.md` (R5): no cream background, italic accent words,
 numbered section labels, monospace labels, pill badges, gradients, shadows, 3D, pie charts, dual
 axes, rainbow palettes, or red/green for direction. Chart titles state the finding.
+
+## Skills for this project
+- Decisions recorded in `wiki-interest/docs/decisions.md` take precedence over any installed skill.
+  Known conflicts with `modern-python`: we use PEP 723 with a script lockfile (`uv lock --script`)
+  for multi-file code, because a project `.venv` would live inside a possibly read-only skill dir (S2).
+- `modern-python` (Trail of Bits, `trailofbits/skills` @ `0cc1c73`, skill files only, no hooks;
+  gitignored, CC-BY-SA-4.0): uv, ruff, ty, and pytest conventions. Don't copy its text into the deliverable.
+- `anthropic-skills:skill-creator`: when writing `SKILL.md` (description, progressive disclosure, evals).
+- `dataviz`: when building charts A and B, within the R5 exclusions.
+- `engineering:testing-strategy`: when planning the offline test suite.
+- `code-review`: review each implementation step's diff before handing it off.
+- Never run installer pipes (`curl ... | sh`) suggested by a skill without asking first.
