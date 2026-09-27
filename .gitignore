@@ -1,7 +1,14 @@
+# Editors
 .idea/
-.claude/skills/modern-python/
+
+# Python tooling caches
 __pycache__/
 .pytest_cache/
 .ruff_cache/
+
+# Dev-only skill installed for building this project (Trail of Bits, CC-BY-SA; not distributed)
+.claude/skills/modern-python/
+
+# Local outputs: analyze runs and working eval runs (final eval runs live in evals/evidence/)
 wiki-interest-runs/
 wiki-interest/evals/runs/

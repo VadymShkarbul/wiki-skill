@@ -41,7 +41,7 @@ logged as D1a, D3a, T5a, I3a, I4a, R2a, R3a and R5a, each with its evidence.
 
 ## 4. Code was tested, linted and reviewed
 
-- 120 offline tests. API tests replay responses recorded from the live APIs, so they're
+- 126 offline tests. API tests replay responses recorded from the live APIs, so they're
   deterministic. Statistics tests use known inputs and outputs.
 - ruff with `select = ["ALL"]`. Every ignore has a written reason.
 - A code review of every step's diff before hand-off: 21 findings over 6 reviews, all fixed,
@@ -69,7 +69,8 @@ logged as D1a, D3a, T5a, I3a, I4a, R2a, R3a and R5a, each with its evidence.
   ([run.py](../evals/run.py), [cases.json](../evals/cases.json)). The grader was validated on
   transcripts with known outcomes before being trusted. It failed the known-bad ones (ad-hoc
   `curl`/Python, a proxy used without consent) and passed the good ones.
-- Iterations went from 6/10 to 10/10. Every change is in
+- At one run per case, iterations went from 6/10 to 10/10. At three runs per case, the final
+  rounds scored 26/30, 26/30, 29/30 (with a contaminated example) and 27/30. Every change is in
   [iteration-log.md](../evals/iteration-log.md). A transcript was read before each change.
   3 of 5 red results turned out to be grader bugs, not model failures, and one of my own
   SKILL.md edits caused a regression that the next run caught.

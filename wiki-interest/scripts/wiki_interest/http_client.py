@@ -85,7 +85,6 @@ class HttpClient:
         self._sleep = sleep
         self._clock = clock
         self._last_request: float | None = None
-        self.network_requests = 0
 
     def get_json(self, url: str, *, ttl: float) -> Any:
         """Return the parsed JSON body. Raises NotFoundError on 404 and SkillError on failure."""
@@ -118,7 +117,6 @@ class HttpClient:
         )
         for attempt in range(self.max_retries + 1):
             self._throttle()
-            self.network_requests += 1
             try:
                 with urlopen(request, timeout=self.timeout) as response:  # noqa: S310
                     return {"status": 200, "body": json.load(response)}

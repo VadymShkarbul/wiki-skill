@@ -100,10 +100,6 @@ class Spikes:
     cleaned: np.ndarray
     days: np.ndarray  # indices of spike days
 
-    def share_of_views(self, original: np.ndarray) -> float:
-        total = float(original.sum())
-        return float((original - self.cleaned).sum()) / total if total else 0.0
-
 
 def despike(daily: np.ndarray) -> Spikes:
     """Replace spike days by their local median (decision T5).

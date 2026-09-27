@@ -1,6 +1,8 @@
 # SKILL.md iteration log
 
-Every change to `SKILL.md` driven by a run on a cheap model, with the evidence. Runs use the
+Every change to `SKILL.md` driven by a run on a cheap model, with the evidence. Folders named
+`runs/<stamp>-haiku` were local working runs and aren't committed. The final runs are kept in
+[evidence/](evidence/) and summarized in [RESULTS.md](RESULTS.md). Runs use the
 isolated harness from decision E1: `claude -p --model haiku --setting-sources project
 --strict-mcp-config` in a temp workspace that holds only this skill.
 

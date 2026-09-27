@@ -130,10 +130,6 @@ def parse_number(token: str) -> float:
     return float(digits.replace(",", "."))  # decimal comma (uk, pl, cs)
 
 
-def numbers_in(text: str) -> list[tuple[str, float]]:
-    return [(m.group(), parse_number(m.group())) for m in NUMBER.finditer(text)]
-
-
 def _scaled(text: str, match: re.Match[str]) -> float:
     """The number's value, including a magnitude word right after it (85K -> 85000)."""
     value = parse_number(match.group())

@@ -69,7 +69,8 @@ def test_despike_finds_isolated_spikes_only():
     result = stats.despike(daily)
     assert list(result.days) == [40, 80]
     assert result.cleaned[40] < 100
-    assert 0 < result.share_of_views(daily) < 0.25
+    removed = (daily - result.cleaned).sum() / daily.sum()
+    assert 0 < removed < 0.25
 
 
 def test_despike_leaves_a_level_shift_alone():
