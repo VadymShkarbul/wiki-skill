@@ -24,3 +24,7 @@ ignore = [
     "ARG",     # fakes accept the arguments of the real function
     "SLF001",  # tests may inspect private state
 ]
+"evals/**" = [
+    "S603",    # the eval harness exists to run the claude and git CLIs
+    "S607",    #   by name, from PATH
+]

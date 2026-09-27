@@ -292,8 +292,17 @@ def format_candidates(
         ),
         None,
     )
+    missing = first.missing(editions)
+    if missing and len(missing) < len(editions) and len(concepts) == 1:
+        # Said here, in the tool output, because small models follow the last thing they read
+        # (eval 2026-09-27: with only SKILL.md saying it, Haiku asked first in 3 of 4 runs).
+        names = ", ".join(e.code for e in missing)
+        lines.append(
+            "Run it now, without --proxy: the covered editions' results don't need the user's "
+            f"answer. Then tell the user that {names} is not covered and offer the proxy."
+        )
     if proxy_example:
         edition, proxy = proxy_example
         ref = shlex.quote(f"{edition.code}:{proxy.title}")
-        lines.append(f"To use a proxy (only after the user agrees), add: --proxy {ref}")
+        lines.append(f"Add --proxy {ref} only in a later run, after the user agrees.")
     return "\n".join(lines)

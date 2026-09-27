@@ -17,7 +17,7 @@
   - [x] 3. `analyze`: fetch, share, YoY, trust verdict, creation/rename checks, charts, summary + analysis.json
   - [x] 4. `report`: one-page PDF, narrative checks, en/uk labels
   - [x] 5. SKILL.md + references (methodology, setup); smoke-tested on Haiku, see `wiki-interest/evals/iteration-log.md`
-  - [ ] 6. Eval runner + cases; iterate on Haiku (N=1)
+  - [x] 6. Eval runner + cases; iterate on Haiku (N=1): 6/10, then 10/10; see `wiki-interest/evals/iteration-log.md`
   - [ ] 7. Final evidence (N=3 + OpenCode smoke); roadmap; AI-verification notes
 - [ ] Test on a cheap model (Haiku 4.5 / OpenRouter) with the three spec queries
 - [ ] Write the roadmap and the AI-verification notes

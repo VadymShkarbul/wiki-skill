@@ -198,8 +198,9 @@ def format_summary(analysis: Analysis, data: dict[str, Any], out_dir: Path, comm
         lines += [*_edition_lines(r), ""]
     for e in analysis.not_covered:
         lines.append(
-            f"{e.label()}: NOT COVERED (no article on these concepts). Run resolve for proxies; "
-            "add --proxy only if the user agrees."
+            f"{e.label()}: NOT COVERED (no article on these concepts). Tell the user and ask "
+            "whether to use a proxy; stop there. A request to compare this edition is not "
+            "agreement to a proxy: add --proxy only after the user says yes in a new message."
         )
     if analysis.excluded:
         left = "; ".join(f"{k}: {', '.join(v)}" for k, v in analysis.excluded.items())

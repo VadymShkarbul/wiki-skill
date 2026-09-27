@@ -4,6 +4,8 @@ import pytest
 from wiki_interest.editions import load_catalog
 from wiki_interest.errors import SkillError
 from wiki_interest.resolve import (
+    Concept,
+    Proxy,
     TitleRef,
     find_candidates,
     format_candidates,
@@ -178,11 +180,22 @@ def test_output_is_relay_ready(api, catalog):
     assert "pl: NOT COVERED" in text
     assert '"Post" (broader concept: fasting, Q44602)' in text
     assert f"Then run: {CMD} analyze --concepts Q1666254 --editions pl,cs" in text
-    assert "add: --proxy pl:Post" in text
+    assert "Run it now, without --proxy" in text
+    assert "Add --proxy pl:Post only in a later run, after the user agrees." in text
 
 
 def test_proxy_with_space_is_shell_quoted(api, catalog):
     editions = eds(catalog, "de")
     concepts = find_candidates(api, catalog, "Q2731224", editions)  # VOA Learning English
     text = format_candidates("Q2731224", editions, concepts, CMD)
-    assert "--proxy 'de:Kontrollierte Sprache'" in text
+    assert "Add --proxy 'de:Kontrollierte Sprache' only" in text
+
+
+def test_run_now_cue_only_when_the_concept_is_unambiguous(catalog):
+    editions = eds(catalog, "en,se")
+    one = Concept("Q1", "java", "island", 200, {"en": "Java"}, {"se": [Proxy("Indonesia", "x")]})
+    two = Concept("Q2", "Java", "language", 150, {"en": "Java (language)"}, {"se": []})
+    assert "Run it now, without --proxy" in format_candidates("Java", editions, [one], CMD)
+    ambiguous = format_candidates("Java", editions, [one, two], CMD)
+    assert "Run it now" not in ambiguous
+    assert "If more than one fits, ask the user." in ambiguous

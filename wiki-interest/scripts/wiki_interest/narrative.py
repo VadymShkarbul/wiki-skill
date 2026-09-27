@@ -35,6 +35,20 @@ NUMBER = re.compile(
     r"(?:\d{1,3}(?:[, \u00a0\u202f]\d{3}(?!\d))+|\d+)"  # 23 700 / 23,700 / 23700
     r"(?:[.,]\d+)?"
 )
+# "85K", "1.2 million", "23 тис.": the writer rounded to thousands or millions
+MAGNITUDE = re.compile(
+    r"\s?(k|K|thousand|тис\.?|тисяч\w*|M|mln|million|млн\.?)(?![\w])", re.UNICODE
+)
+MAGNITUDES = {
+    "k": 1e3,
+    "thousand": 1e3,
+    "тис": 1e3,
+    "тисяч": 1e3,
+    "m": 1e6,
+    "mln": 1e6,
+    "million": 1e6,
+    "млн": 1e6,
+}
 PLACEHOLDER = re.compile(r"<[^<>\n]{3,}>")  # one line: "<100 ... ->" is not a placeholder
 SENTENCE_END = re.compile(r"[.!?](?:\s|$)")
 
@@ -117,6 +131,17 @@ def numbers_in(text: str) -> list[tuple[str, float]]:
     return [(m.group(), parse_number(m.group())) for m in NUMBER.finditer(text)]
 
 
+def _scaled(text: str, match: re.Match[str]) -> float:
+    """The number's value, including a magnitude word right after it (85K -> 85000)."""
+    value = parse_number(match.group())
+    suffix = MAGNITUDE.match(text, match.end())
+    if suffix:
+        word = suffix.group(1).rstrip(".").casefold()
+        word = "тисяч" if word.startswith("тисяч") else word
+        value *= MAGNITUDES[word]
+    return value
+
+
 def _is_percent(text: str, end: int) -> bool:
     return text[end : end + 2].lstrip().startswith("%")
 
@@ -139,14 +164,13 @@ def shown_numbers(summary: str) -> str:
     return RUN_ID.sub("", "\n".join(lines))
 
 
-def check_numbers(
-    n: Narrative, summary: str, path: Path, user_numbers: list[float] | None = None
-) -> None:
-    """Every number in the narrative must be one the analyze summary showed, or one the user
-    gave (a threshold or goal from their question), allowing normal rounding (R3a).
+def unknown_numbers(text: str, summary: str, user_numbers: list[float] | None = None) -> list[str]:
+    """Numbers in ``text`` that the summary did not show and the user did not give, each with
+    a little context. Allows normal rounding (R3a).
 
     Unit-aware: a percentage must match a percentage the summary showed ("10 of 12 months"
     does not license "10%"). Plain numbers may match either kind ("45.5 percent").
+    Also used by the eval grader to check a model's final answer.
     """
     percents: set[float] = set()
     plain: set[float] = set()
@@ -157,17 +181,28 @@ def check_numbers(
     for value in user_numbers or []:
         percents |= _roundings(abs(value))
     plain |= percents
-    text = " ".join([n.title, n.bottom_line, *n.bullets])
     unknown = []
     for match in NUMBER.finditer(text):
-        token, value = match.group(), round(abs(parse_number(match.group())), 6)
+        token, value = match.group(), round(abs(_scaled(text, match)), 6)
         if _is_percent(text, match.end()):
             ok = value in percents
         else:
             ok = value in plain or value in COUNTS
         if not ok:
-            start = text.find(token)
-            unknown.append(f"{token!r} in “…{text[max(0, start - 25) : start + 25]}…”")
+            start = match.start()
+            unknown.append(
+                f"{token!r} in \u201c\u2026{text[max(0, start - 25) : start + 25]}\u2026\u201d"
+            )
+    return unknown
+
+
+def check_numbers(
+    n: Narrative, summary: str, path: Path, user_numbers: list[float] | None = None
+) -> None:
+    """Every number in the narrative must be one the analyze summary showed, or one the user
+    gave (a threshold or goal from their question)."""
+    text = " ".join([n.title, n.bottom_line, *n.bullets])
+    unknown = unknown_numbers(text, summary, user_numbers)
     if unknown:
         listed = "; ".join(unknown[:SHOWN_UNKNOWN])
         more = f" (and {len(unknown) - SHOWN_UNKNOWN} more)" if len(unknown) > SHOWN_UNKNOWN else ""

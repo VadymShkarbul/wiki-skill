@@ -267,6 +267,15 @@ and cheap follow-ups.
 - **Choice:** the default is `./wiki-interest-runs/<run>/` (gitignored), overridable with `--out`.
   The run id is a UTC timestamp plus a short hash of the parameters.
 
+### I3a. Revision: decision-critical cues live in the tool output too *(2026-09-27, evals)*
+- **Context:** in evals, Haiku followed SKILL.md's "analyze covered editions first, then ask about
+  the proxy" in only 1 of 4 runs, and once treated a comparison request as consent to a proxy.
+- **Choice:** `resolve` and `analyze` print the rule at the point where it applies: run analyze
+  now without `--proxy`, and don't treat a comparison request as agreement to a proxy.
+  SKILL.md keeps the same rule with its reason.
+- **Why:** a small model reads the latest tool output right before it acts. Re-run: 3/3.
+  Evidence in `evals/iteration-log.md`.
+
 ### I5. Defaults
 - Every error ends with an actionable `Next:` line, e.g. an unknown edition code suggests the
   closest valid codes.

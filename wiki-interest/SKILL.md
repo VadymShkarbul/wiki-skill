@@ -64,7 +64,8 @@ uv run SKILL_DIR/scripts/wiki.py resolve "intermittent fasting" --editions pl,cs
   1. Run `analyze` now **without** `--proxy`, so the user gets the covered editions' results.
   2. Say which edition is not covered, name the proxy and what it really measures, and ask
      whether to add it.
-  3. Add `--proxy` only in a later run, after the user says yes.
+  3. Add `--proxy` only in a later run, after the user says yes. Asking to compare an
+     edition is not agreement to a proxy for it.
 
 ### 2. Analyze: `analyze`
 

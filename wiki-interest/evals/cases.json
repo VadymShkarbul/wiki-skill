@@ -1,0 +1,145 @@
+{
+  "about": "Eval cases for decision E2. Each case is one conversation (1-2 turns). Checks per turn: skill (bool: the skill must / must not be invoked), commands (wiki.py subcommands that must run in this turn, in order), command_regex (each must match some wiki.py command in this turn), no_command_regex (no wiki.py command in this turn may match), answer_regex (each must match the final answer, case-insensitive), report (a PDF must be produced in this turn), language (the answer's main script). Always checked on every turn: no ad-hoc code, and every number in the answer was printed by a wiki.py command (or appears in the prompt).",
+  "cases": [
+    {
+      "id": "q1-fasting-pl-cs",
+      "note": "Spec example 1. pl has no article: report it and ask before using a proxy (D3).",
+      "turns": [
+        {
+          "prompt": "Compare the growth of interest in intermittent fasting in Polish and Czech Wikipedia over the last two years.",
+          "checks": {
+            "skill": true,
+            "commands": ["resolve", "analyze"],
+            "no_command_regex": ["--proxy"],
+            "answer_regex": ["47[.,]7|48 ?%", "not covered|no (dedicated |specific )?article|doesn.t have|does not have|no .{0,40}article"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "q2-astronomy-uk-in-ukrainian",
+      "note": "Spec example 2, asked in Ukrainian as in the task text. Trust must be addressed.",
+      "turns": [
+        {
+          "prompt": "Ми думаємо додати курс з астрономії до освітнього застосунку. Чи зростає інтерес до цієї теми в україномовній Вікіпедії, і наскільки цьому зростанню можна довіряти?",
+          "checks": {
+            "skill": true,
+            "commands": ["resolve", "analyze"],
+            "command_regex": ["analyze.*Q333"],
+            "answer_regex": ["45[.,]5|46 ?%", "спад|зменш|знизи|скороч|падін|падає", "висок|упевнен|довір"],
+            "language": "uk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q3-english-report",
+      "note": "Spec example 3: comparison across chosen editions plus a shareable report. 'Learning English' needs the English language article as a named stand-in (D5).",
+      "turns": [
+        {
+          "prompt": "We're building a language-learning app. Compare interest in learning English in the Polish, Czech, Ukrainian, German and Turkish Wikipedias and prepare a short one-page report: which audiences should we research next, and why?",
+          "checks": {
+            "skill": true,
+            "commands": ["resolve", "analyze", "report"],
+            "command_regex": ["analyze.*Q1860"],
+            "report": true,
+            "answer_regex": ["english language|proxy|stand-in|stand in", "\\.pdf"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "followup-add-slovak-3y",
+      "note": "Follow-up that changes assumptions: add an edition and a longer window.",
+      "turns": [
+        {
+          "prompt": "Compare the growth of interest in intermittent fasting in Polish and Czech Wikipedia over the last two years.",
+          "checks": {"skill": true}
+        },
+        {
+          "prompt": "Add Slovak Wikipedia too, and use the last three years instead.",
+          "checks": {
+            "commands": ["analyze"],
+            "command_regex": ["analyze.*--editions[ =][^ ]*sk", "--months[ =]36"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "followup-proxy-yes",
+      "note": "The user approves the proxy in a second turn; only now may --proxy be used.",
+      "turns": [
+        {
+          "prompt": "Compare the growth of interest in intermittent fasting in Polish and Czech Wikipedia over the last two years.",
+          "checks": {"skill": true, "no_command_regex": ["--proxy"]}
+        },
+        {
+          "prompt": "Yes, use the Polish article on fasting in general as a proxy.",
+          "checks": {
+            "commands": ["analyze"],
+            "command_regex": ["--proxy[ =]['\"]?pl:Post"],
+            "answer_regex": ["proxy|broader|in general|general fasting"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "followup-report-in-ukrainian",
+      "note": "Report requested after the analysis, in Ukrainian.",
+      "turns": [
+        {
+          "prompt": "Is interest in astronomy growing in Ukrainian Wikipedia, and how much can we trust it?",
+          "checks": {"skill": true, "commands": ["resolve", "analyze"]}
+        },
+        {
+          "prompt": "Make that a one-page PDF report in Ukrainian.",
+          "checks": {"commands": ["report"], "command_regex": ["report.*--lang[ =]uk"], "report": true}
+        }
+      ]
+    },
+    {
+      "id": "ambiguous-mercury",
+      "note": "Ambiguous topic: ask which meaning, or state the assumption explicitly (D1).",
+      "turns": [
+        {
+          "prompt": "Is interest in Mercury growing in English and German Wikipedia?",
+          "checks": {
+            "skill": true,
+            "commands": ["resolve"],
+            "answer_regex": ["planet|element|god|mytholog|metal|quicksilver", "\\?|assum|interpret"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "topic-in-ukrainian",
+      "note": "Topic written in Ukrainian must still resolve to the right concept.",
+      "turns": [
+        {
+          "prompt": "Порівняй, як змінювався інтерес до інтервального голодування в українській і польській Вікіпедії.",
+          "checks": {"skill": true, "command_regex": ["analyze.*Q1666254"], "language": "uk"}
+        }
+      ]
+    },
+    {
+      "id": "country-code-cz",
+      "note": "A country code instead of a language code: the analysis must end up on cs.",
+      "turns": [
+        {
+          "prompt": "How is interest in astronomy changing in the cz and pl Wikipedias?",
+          "checks": {"skill": true, "command_regex": ["analyze.*--editions[ =](cs,pl|pl,cs)"]}
+        }
+      ]
+    },
+    {
+      "id": "negative-grammar-fix",
+      "note": "Mentions Wikipedia and astronomy but needs no pageview data: the skill must not trigger.",
+      "turns": [
+        {
+          "prompt": "Fix the grammar in this sentence from my Wikipedia article draft: 'Astronomy are a natural science that study celestial objects and phenomenon.'",
+          "checks": {"skill": false}
+        }
+      ]
+    }
+  ]
+}

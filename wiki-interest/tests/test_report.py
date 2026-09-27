@@ -102,6 +102,7 @@ SUMMARY = "cs DECLINING -47.7% [90% range -62.5% to -27.9%] · 23,694 views/mont
         "Близько 23 700 переглядів; спад \u221247,7%.",  # Ukrainian separators and decimal comma
         "Three editions over 12 months.",  # small counts are always fine
         "It fell 47.7 percent.",  # a shown percentage, written out
+        "About 24K views, i.e. 24 thousand; близько 24 тис.",  # magnitude words
     ],
 )
 def test_shown_and_rounded_numbers_pass(text):
@@ -115,6 +116,7 @@ def test_shown_and_rounded_numbers_pass(text):
         "Growth will reach 20% next year.",
         "Below a 10% bar.",  # a count, never a percentage
         "11% of months fell.",  # "11 of 12 months" is shown, but not as a percentage
+        "About 35K views a month.",  # 35,000 was never shown
     ],
 )
 def test_invented_numbers_are_rejected(text):
