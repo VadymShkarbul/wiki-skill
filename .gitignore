@@ -10,5 +10,5 @@ __pycache__/
 .claude/skills/modern-python/
 
 # Local outputs: analyze runs and working eval runs (final eval runs live in evals/evidence/)
-wiki-interest-runs/
-wiki-interest/evals/runs/
+wiki-signal-runs/
+wiki-signal/evals/runs/

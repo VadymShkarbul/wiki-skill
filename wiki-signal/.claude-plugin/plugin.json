@@ -1,0 +1,20 @@
+{
+  "name": "wiki-signal",
+  "version": "0.1.0",
+  "description": "Measure how interest in a topic changes across Wikipedia language editions: verdicts with confidence, charts, and a one-page PDF report for deciding which topics to build and which languages to launch in.",
+  "author": {
+    "name": "Vadym Shkarbul"
+  },
+  "repository": "https://github.com/VadymShkarbul/wiki-signal",
+  "license": "MIT",
+  "keywords": [
+    "wikipedia",
+    "pageviews",
+    "market-research",
+    "localization",
+    "trends"
+  ],
+  "skills": [
+    "./"
+  ]
+}
