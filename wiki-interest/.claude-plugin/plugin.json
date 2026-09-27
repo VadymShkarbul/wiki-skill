@@ -6,6 +6,7 @@
     "name": "Vadym Shkarbul"
   },
   "repository": "https://github.com/VadymShkarbul/wiki-skill",
+  "license": "MIT",
   "keywords": [
     "wikipedia",
     "pageviews",

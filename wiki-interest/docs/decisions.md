@@ -448,7 +448,8 @@ Evidence (2026-09-26, uv 0.8.18):
 - **Codex:** not run here (not installed). Format and paths come from its docs. Its sandbox has no
   network by default, so setup.md explains the approval and `network_access` options. The pageview
   cache falls back to the temp dir when `~/.cache` isn't writable.
-- **Open:** a licence (none chosen yet), and a GitHub remote, which the marketplace command needs.
+- **Licence:** MIT (the author's choice), in `LICENSE` at the repo root and in the skill folder.
+- **Open:** a GitHub remote, which the marketplace command needs; the author pushes it.
 
 ## Testing on a cheap model
 

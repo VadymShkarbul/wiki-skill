@@ -10,6 +10,7 @@ description: >-
   languages or countries (e.g. Polish vs Czech) and for shareable interest or demand-signal
   reports. Not for editing Wikipedia, looking up facts in articles, or analyzing a website's
   own traffic.
+license: MIT
 compatibility: Needs uv (https://docs.astral.sh/uv/) and internet access to Wikimedia APIs.
 ---
 
