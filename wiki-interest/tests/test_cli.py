@@ -18,10 +18,11 @@ def test_bad_arguments_use_error_next_shape(capsys):
     assert "\nNext: Run `wiki.py --help`" in err
 
 
-def test_skill_error_is_printed_without_traceback(capsys):
-    assert cli.main(["report"]) == cli.EXIT_USAGE
+def test_skill_error_is_printed_without_traceback(tmp_path, capsys):
+    assert cli.main(["report", "--run", str(tmp_path)]) == cli.EXIT_USAGE
     err = capsys.readouterr().err
-    assert err.startswith("Error: `report` is not implemented")
+    assert err.startswith(f"Error: {tmp_path} is not an analyze run folder")
+    assert "\nNext: Run analyze first" in err
     assert "Traceback" not in err
 
 
@@ -31,8 +32,8 @@ def test_unexpected_exception_is_logged_not_shown(monkeypatch, tmp_path, capsys)
     def boom(args):
         raise ZeroDivisionError("bad")
 
-    monkeypatch.setattr(cli, "_not_implemented", boom)
-    assert cli.main(["report"]) == cli.EXIT_INTERNAL
+    monkeypatch.setattr(cli, "_report", boom)
+    assert cli.main(["report", "--run", str(tmp_path)]) == cli.EXIT_INTERNAL
     err = capsys.readouterr().err
     assert "internal error in wiki-interest (ZeroDivisionError: bad)" in err
     assert "Do not write your own code" in err

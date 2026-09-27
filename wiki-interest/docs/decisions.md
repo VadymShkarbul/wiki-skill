@@ -331,12 +331,48 @@ Layout (A4 portrait, one page):
 - **Why:** this answers the spec's "verify conclusions" requirement in a deterministic way. Invented
   numbers can't reach the PDF, and the one-page limit is guaranteed.
 
+### R3a. Revision: numbers are checked against the summary the model saw *(2026-09-27)*
+- **Context:** R3 said "numbers not in `analysis.json`". That file holds hundreds of monthly
+  shares and view counts, so almost any invented percentage would match one of them by chance.
+- **Choice:** `analyze` saves its summary as `summary.txt`. `report` accepts a narrative number
+  only if it is one the summary showed, or a normal rounding of one:
+  - half-up and half-even (62.5 -> 62 or 63);
+  - to hundreds or thousands for values of 100 or more (23,694 -> 23,700 or 24,000).
+  Small counts 0-12 are always accepted.
+  The parser handles `,` and space thousands separators (uk/pl/cs write "23 700"), decimal
+  commas, and the Unicode minus sign.
+- **Why:** it matches the instruction the model gets ("use only numbers shown here"), and it
+  catches invented statistics. In the live test, "35% more promising" was rejected.
+- **Found by testing Ukrainian:** the first version split "23 700" into 23 and 700 and rejected
+  an honest narrative.
+- **Unit-aware (review fix):** a percentage in the narrative must match a percentage the summary
+  showed. "10 of 12 months" does not license "10%". Plain numbers may match either kind. Small
+  counts 0-12 are exempt only when they are not percentages.
+- **Not checked:** the summary's Saved/Re-run/Next lines and the run id. Their digits (paths,
+  timestamps) would otherwise whitelist arbitrary numbers.
+- **User numbers:** `report --user-numbers 15,5000` declares numbers that came from the user, such
+  as a growth bar or an audience goal, so the report can state the user's own criteria. The spec
+  says users bring their own definition of "promising". Undeclared, they are rejected.
+
 ### R4. Report language: `--lang`, with en and uk built in
 - **Options:** English only; **a string table**; the model translates labels on each run.
 - **Choice:** about 25 fixed labels live in one JSON file per language. en and uk are included, and
   adding a language needs no code change. The narrative is written in the user's language.
 - **Limitation:** the font covers Latin, Cyrillic, and Greek scripts. Other scripts (Noto fonts)
   go on the roadmap.
+- **Implemented (2026-09-27):** 38 labels per file, including chart texts. `report` redraws both
+  charts from `analysis.json` in the chosen language, so a report can be rebuilt from a saved run
+  with no network.
+- **Known limitation:** code-generated caveats and reasons, and edition names from Wikimedia's
+  site matrix, stay in English in a non-English report. Translating these templates goes on the
+  roadmap.
+
+### R5a. Settled while checking the rendered PDF *(2026-09-27)*
+- Left-aligned text: fpdf's default justification stretched word gaps, badly in the footer.
+- White chart background: the off-white chart surface showed up as panels on the white page.
+- Verdict words in the table are in ink, not the series color (dataviz rule: text wears text
+  tokens). Chart B carries the color.
+- Header labels that break mid-word were reworded or widened ("Views per month").
 
 ### R5. Design exclusions *(default)*
 No cream or off-white background, no italic accent words in headings, no numbered "01 / 02" section

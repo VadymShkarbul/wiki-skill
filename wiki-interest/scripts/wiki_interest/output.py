@@ -15,6 +15,7 @@ from typing import Any
 from wiki_interest import __version__
 from wiki_interest.analysis import Analysis, EditionResult
 from wiki_interest.charts import draw_growth, draw_trend
+from wiki_interest.i18n import words
 from wiki_interest.timeseries import shift_month
 
 RUNS_DIR = "wiki-interest-runs"
@@ -86,7 +87,7 @@ def _edition_json(r: EditionResult) -> dict[str, Any]:
         "months_agreeing": r.months_agreeing,
         "pairs": r.pairs,
         "spike_share": _num(r.spike_share),
-        "top_spikes": [{"date": d, "views": v} for d, v in r.spike_days[:TOP_SPIKES]],
+        "spike_days": [{"date": d, "views": v} for d, v in r.spike_days],
         "trend_per_year": _num(r.trend_per_year),
         "median_views_per_month": _num(r.median_views),
         "mean_share_per_million": _num(r.mean_share),
@@ -117,6 +118,13 @@ def to_json(analysis: Analysis, rid: str, files: dict[str, str], command: str) -
         "tool": f"wiki-interest {__version__}",
         "run_id": rid,
         "data_through": analysis.data_through.isoformat(),
+        "params": {
+            "concepts": [c.qid for c in analysis.concepts],
+            "editions": [e.code for e in analysis.editions],
+            "months": analysis.months,
+            "proxies": analysis.proxies,
+            "sort": analysis.sort,
+        },
         "concepts": [{"qid": c.qid, "label": c.label} for c in analysis.concepts],
         "window": {
             "months": [analysis.window[0], analysis.window[-1]],
@@ -209,7 +217,7 @@ def format_summary(analysis: Analysis, data: dict[str, Any], out_dir: Path, comm
     lines += [f"Caveat (all editions): {c}" for c in analysis.caveats]
     lines += [
         "",
-        f"Saved: {out_dir} (analysis.json, trend.png, growth.png)",
+        f"Saved: {out_dir} (analysis.json, summary.txt, trend.png, growth.png)",
         f"Re-run: {data['rerun']}",
         (
             "Next: tell the user these verdicts with their confidence, reasons and caveats. Use "
@@ -226,10 +234,13 @@ def save(analysis: Analysis, out_root: Path, command: str) -> tuple[Path, str]:
     out_dir = (out_root / rid).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
     files = {"trend": "trend.png", "growth": "growth.png"}
-    draw_trend(analysis, str(out_dir / files["trend"]))
-    draw_growth(analysis, str(out_dir / files["growth"]))
     data = to_json(analysis, rid, files, command)
+    draw_trend(data, str(out_dir / files["trend"]), words("en"))
+    draw_growth(data, str(out_dir / files["growth"]), words("en"))
     (out_dir / "analysis.json").write_text(
         json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    return out_dir, format_summary(analysis, data, out_dir, command)
+    summary = format_summary(analysis, data, out_dir, command)
+    # report checks the narrative's numbers against exactly what the model was shown (R3a)
+    (out_dir / "summary.txt").write_text(summary + "\n", encoding="utf-8")
+    return out_dir, summary

@@ -17,7 +17,9 @@ from wiki_interest.cache import Cache, default_cache_dir
 from wiki_interest.editions import load_catalog
 from wiki_interest.errors import SkillError
 from wiki_interest.http_client import HttpClient
+from wiki_interest.i18n import languages
 from wiki_interest.output import RUNS_DIR, save
+from wiki_interest.report import render
 from wiki_interest.resolve import MAX_CANDIDATES, find_candidates, format_candidates
 
 EXIT_OK = 0
@@ -49,13 +51,6 @@ class _Parser(argparse.ArgumentParser):
         sys.exit(EXIT_USAGE)
 
 
-def _not_implemented(args: argparse.Namespace) -> int:
-    raise SkillError(
-        f"`{args.command}` is not implemented in this build yet.",
-        "Tell the user this command is not available yet.",
-    )
-
-
 def _resolve(args: argparse.Namespace) -> int:
     client = make_client()
     catalog = load_catalog(client)
@@ -82,6 +77,28 @@ def _analyze(args: argparse.Namespace) -> int:
     )
     _, summary = save(analysis, Path(args.out), command_prefix())
     print(summary)
+    return EXIT_OK
+
+
+def _numbers(text: str) -> list[float]:
+    try:
+        return [float(t.replace("%", "")) for t in text.split(",") if t.strip()]
+    except ValueError as error:
+        msg = f"--user-numbers must be comma-separated numbers, got {text!r}"
+        raise argparse.ArgumentTypeError(msg) from error
+
+
+def _report(args: argparse.Namespace) -> int:
+    run_dir = Path(args.run).resolve()
+    pdf = render(run_dir, args.lang, args.user_numbers)
+    print(
+        f"Report saved: {pdf} (1 page, labels in {args.lang})\n"
+        "Checks passed: every number in narrative.md was shown by analyze; the text fits one "
+        "page.\n"
+        "Next: give the user the PDF path. To change the wording, edit "
+        f"{run_dir / 'narrative.md'} and re-run: {command_prefix()} report --run "
+        f"{shlex.quote(str(run_dir))} --lang {args.lang}"
+    )
     return EXIT_OK
 
 
@@ -136,7 +153,21 @@ def build_parser() -> argparse.ArgumentParser:
     analyze.set_defaults(handler=_analyze)
 
     report = sub.add_parser("report", help="Render the one-page PDF report for a run.")
-    report.set_defaults(handler=_not_implemented)
+    report.add_argument("--run", required=True, help="The run folder from analyze's Saved: line.")
+    report.add_argument(
+        "--lang",
+        default="en",
+        choices=languages(),
+        help="Language of the report's fixed labels (the narrative can be in any language).",
+    )
+    report.add_argument(
+        "--user-numbers",
+        type=_numbers,
+        default=[],
+        help="Numbers the user gave you (e.g. a growth threshold of 15 or a goal of 5000), "
+        "comma-separated, so the narrative may quote them. Never analysis numbers.",
+    )
+    report.set_defaults(handler=_report)
     return parser
 
 
