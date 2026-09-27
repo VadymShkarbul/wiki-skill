@@ -16,7 +16,7 @@
   - [x] 2. `resolve`: Wikidata candidates, coverage, proxies (creation date/rename checks move to step 3: they need the window)
   - [x] 3. `analyze`: fetch, share, YoY, trust verdict, creation/rename checks, charts, summary + analysis.json
   - [x] 4. `report`: one-page PDF, narrative checks, en/uk labels
-  - [ ] 5. SKILL.md + references; offline tests with recorded responses
+  - [x] 5. SKILL.md + references (methodology, setup); smoke-tested on Haiku, see `wiki-interest/evals/iteration-log.md`
   - [ ] 6. Eval runner + cases; iterate on Haiku (N=1)
   - [ ] 7. Final evidence (N=3 + OpenCode smoke); roadmap; AI-verification notes
 - [ ] Test on a cheap model (Haiku 4.5 / OpenRouter) with the three spec queries
