@@ -424,6 +424,8 @@ Evidence (2026-09-26, uv 0.8.18):
 - **Choice:** the skill dir holds code, references, assets, tests, evals, and docs. The repo root
   keeps only dev-process files (`CLAUDE.md`, `TASKS.md`) and a pointer README. The empty
   PyCharm-generated root `pyproject.toml` was deleted.
+- **Update (2026-09-27):** before publishing, the author removed `CLAUDE.md` and `TASKS.md`. The
+  repo root now holds the README, the LICENSE, and the Claude Code marketplace file.
 - **Why:** this is the strict reading of "all own materials and code must be in the skill
   directory". It costs nothing at runtime, because agents load only `SKILL.md` and read other files
   on demand.
