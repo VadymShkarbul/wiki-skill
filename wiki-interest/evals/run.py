@@ -34,7 +34,7 @@ sys.path.insert(0, str(SKILL / "scripts"))
 from wiki_interest.narrative import unknown_numbers  # noqa: E402 - needs the path above
 
 SKIP = ("tests", "docs", "evals", "__pycache__", ".ruff_cache", ".pytest_cache")
-ALLOWED_TOOLS = ["Skill", "Read", "Write", "Bash(uv run:*)"]
+ALLOWED_TOOLS = ["Skill", "Read", "Write", "Edit", "Bash(uv run:*)"]
 WIKI_CMD = re.compile(r"^\s*uv run\s.*?wiki\.py['\"]?\s+(\w+)")  # allows `uv run --quiet ...`
 CHAINED = re.compile(r"&&|;|\|")
 ADHOC = re.compile(r"\b(python3?|curl|wget|pip|node|requests|urllib)\b", re.IGNORECASE)
@@ -259,6 +259,21 @@ def _grade_answer(grades: Grades, turn: Turn, checks: dict, history: list[Turn])
         )
 
 
+def _grade_paths(grades: Grades, turn: Turn, paths: list[dict], history: list[Turn]) -> None:
+    """Pass if any one acceptable path passes all its checks (e.g. two correct ways to answer)."""
+    outcomes = []
+    for path in paths:
+        sub = Grades()
+        _grade_commands(sub, turn, path)
+        _grade_answer(sub, turn, path, history)
+        outcomes.append((path.get("name", "path"), [g for g in sub if not g["passed"]]))
+    ok = next((name for name, failed in outcomes if not failed), None)
+    evidence = ok or " | ".join(
+        f"{name}: " + "; ".join(g["check"] for g in failed) for name, failed in outcomes
+    )
+    grades.add(f"one of {len(paths)} acceptable paths", passed=ok is not None, evidence=evidence)
+
+
 def grade(turn: Turn, checks: dict, history: list[Turn]) -> list[dict]:
     """One {"check", "passed", "evidence"} per check; the fixed checks always run."""
     grades = Grades()
@@ -266,6 +281,8 @@ def grade(turn: Turn, checks: dict, history: list[Turn]) -> list[dict]:
         grades.add("turn completed", passed=False, evidence=turn.error[:300])
     _grade_commands(grades, turn, checks)
     _grade_answer(grades, turn, checks, history)
+    if "any_of" in checks:
+        _grade_paths(grades, turn, checks["any_of"], history)
     grades.add(
         "no ad-hoc code", passed=not turn.violations, evidence="; ".join(turn.violations) or "none"
     )

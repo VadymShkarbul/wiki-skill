@@ -16,6 +16,7 @@ from wiki_interest.errors import SkillError
 from wiki_interest.mediawiki import WIKIDATA_API, JsonGetter, action_api, batches
 
 MAX_CANDIDATES = 5
+AMBIGUITY_SHARE = 0.25  # another exact meaning counts if it has >= 25% of the top one's wikis
 PROXIES_PER_EDITION = 3
 BROADER_PROPERTIES = ("P279", "P31")  # subclass of, instance of
 QID_RE = re.compile(r"[Qq]([1-9]\d*)")
@@ -36,6 +37,7 @@ class Concept:
     wiki_count: int
     titles: dict[str, str]
     proxies: dict[str, list[Proxy]] = field(default_factory=dict)
+    exact: bool = False  # the whole label or an alias equals the searched topic
 
     def missing(self, editions: list[Edition]) -> list[Edition]:
         return [e for e in editions if e.code not in self.titles]
@@ -235,9 +237,10 @@ def find_candidates(  # noqa: PLR0913 - mirrors the CLI flags one to one
     built = (make_concept(entities.get(q, {}), catalog, editions, languages) for q in qids)
     # Exact matches first, then a notability prior: widely covered meanings before rare ones
     # ("Mercury": planet before a car brand; "Go": the game and the language before Google).
-    concepts = sorted((c for c in built if c), key=lambda c: (c.qid not in exact, -c.wiki_count))[
-        :limit
-    ]
+    ranked = sorted((c for c in built if c), key=lambda c: (c.qid not in exact, -c.wiki_count))
+    concepts = ranked[:limit]
+    for concept in concepts:
+        concept.exact = ref is None and concept.qid in exact
     if not concepts:
         if ref is not None:
             raise SkillError(
@@ -275,6 +278,23 @@ def format_candidates(
                 lines.append("       no proxy found in this edition")
     codes = ",".join(e.code for e in editions)
     first = concepts[0]
+    exact_meanings = [c for c in concepts if c.exact]
+    top = max((c.wiki_count for c in exact_meanings), default=0)
+    # Only comparably notable meanings: "chess" the game (202 wikis) is not ambiguous because of
+    # an ABBA musical (19) or a surname (1); "Mercury" planet (250) vs element (176) is.
+    meanings = [c for c in exact_meanings if c.wiki_count >= AMBIGUITY_SHARE * top]
+    if len(meanings) > 1:
+        # In the tool output, where a small model reads it (eval 2026-09-27: 1 of 3 runs
+        # analyzed the planet without mentioning the other meanings of "Mercury").
+        names = "; ".join(f"{c.qid} {c.description or c.label}" for c in meanings)
+        lines += [
+            "",
+            (
+                f"AMBIGUOUS: {topic!r} names {len(meanings)} different concepts ({names}). "
+                "Unless the user's message makes the meaning clear, ask which one they mean "
+                "before running analyze."
+            ),
+        ]
     lines += [
         "",
         (

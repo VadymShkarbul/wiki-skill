@@ -1,0 +1,119 @@
+{
+  "case": "followup-report-in-ukrainian",
+  "run": 2,
+  "passed": true,
+  "cost": 0.0663,
+  "turns": 8,
+  "seconds": 44.5,
+  "graded": [
+    {
+      "turn": 1,
+      "checks": [
+        {
+          "check": "skill used",
+          "passed": true,
+          "evidence": "Skill tool: True; wiki.py commands: ['resolve', 'analyze']"
+        },
+        {
+          "check": "runs resolve -> analyze",
+          "passed": true,
+          "evidence": "ran: ['resolve', 'analyze']"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "checks": [
+        {
+          "check": "runs report",
+          "passed": true,
+          "evidence": "ran: ['report']"
+        },
+        {
+          "check": "a command matches /report.*--lang[ =]uk/",
+          "passed": true,
+          "evidence": "uv run /tmp/wiki-eval-0amfvasi/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-0amfvasi/wiki-interest-runs/20260927-092845-1fa099 --lang uk"
+        },
+        {
+          "check": "PDF report produced",
+          "passed": true,
+          "evidence": "Report saved: /tmp/wiki-eval-0amfvasi/wiki-interest-runs/20260927-092845-1fa099/report.pdf (1 page, labels i"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    "artifacts/20260927-092845-1fa099/analysis.json",
+    "artifacts/20260927-092845-1fa099/summary.txt",
+    "artifacts/20260927-092845-1fa099/narrative.md",
+    "artifacts/20260927-092845-1fa099/report.pdf"
+  ],
+  "transcript": [
+    {
+      "prompt": "Is interest in astronomy growing in Ukrainian Wikipedia, and how much can we trust it?",
+      "session_id": "2ba72668-d265-4250-9738-d5f801fdc6c3",
+      "skill_invoked": true,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-0amfvasi/.claude/skills/wiki-interest/scripts/wiki.py resolve \"astronomy\" --editions uk",
+          "sub": "resolve",
+          "output": "Installed 13 packages in 20ms\nCandidates for 'astronomy' · editions: uk (Ukrainian)\n1. Q333 astronomy: natural science studying celestial objects and phenomena in the cosmos · 252 Wikipedias\n   uk: Астрономія\n2. Q3232273 Astronomy: American magazine · 9 Wikipedias\n   uk: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Журнал\" (broader concept: magazine, Q41298)\n3. Q12012641 astronomy: fictional class at Hogwarts · 2 Wikipedias\n   uk: NOT COVERED (no article on this concept)\n       no proxy found in this edition\n\nAMBIGUOUS: 'astronomy' names 3 different concepts (Q333 natural science studying celestial objects and phenomena in the cosmos; Q3232273 American magazine; Q12012641 fictional class at Hogwarts). Unless the user's message makes the meaning clear, ask which one they mean before running analyze.\n\nNext: pick the candidate that matches what the user means. If more than one fits, ask the user. If none fits, re-run resolve with the concept's encyclopedic name, e.g. \"English language\" instead of \"learning English\".\nThen run: uv run /tmp/wiki-eval-0amfvasi/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions uk",
+          "error": false
+        },
+        {
+          "cmd": "uv run /tmp/wiki-eval-0amfvasi/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions uk",
+          "sub": "analyze",
+          "output": "Analysis 20260927-092845-1fa099 · data through 2026-09-26\nMeasured: views of the 'astronomy' article (Q333). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.\nGrowth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).\n\nuk (Ukrainian) · Астрономія\n  DECLINING -45.5% [90% range -52.1% to -33.7%] · confidence HIGH · 437 views/month\n  - consistent: 10 of 12 months below the same month last year\n  - seasonal: peaks in September (+176.5% vs average)\n  - caveat: all of uk Wikipedia changed -24.6% year over year; share-of-edition figures remove this effect\n\nCaveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.13%); figures here use the daily data\nCaveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too\n\nSaved: /tmp/wiki-eval-0amfvasi/wiki-interest-runs/20260927-092845-1fa099 (analysis.json, summary.txt, trend.png, growth.png)\nRe-run: uv run /tmp/wiki-eval-0amfvasi/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions uk --months 24\nNext: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-0amfvasi/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-0amfvasi/wiki-interest-runs/20260927-092845-1fa099",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "**No—interest in astronomy is declining significantly in Ukrainian Wikipedia.**\n\nHere are the findings:\n\n**Verdict: DECLINING -45.5%** with **HIGH confidence**\n- The astronomy article's share of Ukrainian Wikipedia views fell 45.5% over the last 12 months (Sep 2025–Aug 2026) compared to the same period a year earlier\n- The 90% confidence range is -52.1% to -33.7%—quite narrow, so we can trust this result\n- The decline was consistent: 10 of 12 months underperformed the prior year\n\n**Why we can trust it:**\n- This is a share of the edition's total traffic, which removes the effect of Ukrainian Wikipedia's own 24.6% overall traffic change\n- 10 out of 12 months showed the decline, not a one-off spike\n\n**One note:** The astronomy article does show a seasonal pattern (September peaks at +176.5% above average), so there's natural monthly variation, but the year-over-year decline is still clear.\n\nThis measures pageview attention on Wikipedia, not demand or interest elsewhere—so if you need to validate this signal, check whether external interest in astronomy has changed in Ukrainian-speaking audiences.",
+      "cost": 0.043580999999999995,
+      "turns": 5,
+      "seconds": 28.6,
+      "error": ""
+    },
+    {
+      "prompt": "Make that a one-page PDF report in Ukrainian.",
+      "session_id": "2ba72668-d265-4250-9738-d5f801fdc6c3",
+      "skill_invoked": false,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-0amfvasi/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-0amfvasi/wiki-interest-runs/20260927-092845-1fa099 --lang uk",
+          "sub": "report",
+          "output": "Report saved: /tmp/wiki-eval-0amfvasi/wiki-interest-runs/20260927-092845-1fa099/report.pdf (1 page, labels in uk)\nChecks passed: every number in narrative.md was shown by analyze; the text fits one page.\nNext: give the user the PDF path. To change the wording, edit /tmp/wiki-eval-0amfvasi/wiki-interest-runs/20260927-092845-1fa099/narrative.md and re-run: uv run /tmp/wiki-eval-0amfvasi/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-0amfvasi/wiki-interest-runs/20260927-092845-1fa099 --lang uk",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "Done. Your one-page PDF report in Ukrainian is ready:\n\n**`/tmp/wiki-eval-0amfvasi/wiki-interest-runs/20260927-092845-1fa099/report.pdf`**\n\nThe report includes the trend charts, the data table, and caveats about the methodology.",
+      "cost": 0.0226872,
+      "turns": 3,
+      "seconds": 15.9,
+      "error": ""
+    }
+  ]
+}

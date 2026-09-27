@@ -1,0 +1,72 @@
+{
+  "case": "topic-in-ukrainian",
+  "run": 1,
+  "passed": true,
+  "cost": 0.0449,
+  "turns": 5,
+  "seconds": 24.4,
+  "graded": [
+    {
+      "turn": 1,
+      "checks": [
+        {
+          "check": "skill used",
+          "passed": true,
+          "evidence": "Skill tool: True; wiki.py commands: ['resolve', 'analyze']"
+        },
+        {
+          "check": "a command matches /analyze.*Q1666254/",
+          "passed": true,
+          "evidence": "uv run /tmp/wiki-eval-z2iq09g5/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions uk,pl"
+        },
+        {
+          "check": "answer in uk",
+          "passed": true,
+          "evidence": "script looks like uk"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    "artifacts/20260927-092919-47323a/analysis.json",
+    "artifacts/20260927-092919-47323a/summary.txt"
+  ],
+  "transcript": [
+    {
+      "prompt": "Порівняй, як змінювався інтерес до інтервального голодування в українській і польській Вікіпедії.",
+      "session_id": "1515249c-f8f4-44d7-8ebd-2f5ae3417e90",
+      "skill_invoked": true,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-z2iq09g5/.claude/skills/wiki-interest/scripts/wiki.py resolve \"intermittent fasting\" --editions uk,pl",
+          "sub": "resolve",
+          "output": "Installed 13 packages in 27ms\nCandidates for 'intermittent fasting' · editions: uk (Ukrainian), pl (Polish)\n1. Q1666254 intermittent fasting: a diet that cycles between a period of fasting and non-fasting · 31 Wikipedias\n   uk: Інтервальне голодування\n   pl: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Post\" (broader concept: fasting, Q44602); \"Dieta\" (broader concept: diet, Q474191)\n\nNext: pick the candidate that matches what the user means. If more than one fits, ask the user. If none fits, re-run resolve with the concept's encyclopedic name, e.g. \"English language\" instead of \"learning English\".\nThen run: uv run /tmp/wiki-eval-z2iq09g5/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions uk,pl\nRun it now, without --proxy: the covered editions' results don't need the user's answer. Then tell the user that pl is not covered and offer the proxy.\nAdd --proxy pl:Post only in a later run, after the user agrees.",
+          "error": false
+        },
+        {
+          "cmd": "uv run /tmp/wiki-eval-z2iq09g5/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions uk,pl",
+          "sub": "analyze",
+          "output": "Analysis 20260927-092919-47323a · data through 2026-09-26\nMeasured: views of the 'intermittent fasting' article (Q1666254). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.\nGrowth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).\n\nuk (Ukrainian) · Інтервальне голодування\n  DECLINING -66.4% [90% range -72.3% to -58.7%] · confidence HIGH · 165 views/month\n  - consistent: 12 of 12 months below the same month last year\n  - seasonal: peaks in March (+30.4% vs average)\n  - caveat: all of uk Wikipedia changed -24.6% year over year; share-of-edition figures remove this effect\n\npl (Polish): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.\nCaveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.13%); figures here use the daily data\nCaveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too\n\nSaved: /tmp/wiki-eval-z2iq09g5/wiki-interest-runs/20260927-092919-47323a (analysis.json, summary.txt, trend.png, growth.png)\nRe-run: uv run /tmp/wiki-eval-z2iq09g5/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions uk,pl --months 24\nNext: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-z2iq09g5/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-z2iq09g5/wiki-interest-runs/20260927-092919-47323a",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "## Результати\n\n**Українська Вікіпедія** показує **значне падіння інтересу**:\n- **Падіння на 66.4%** за останні 12 місяців (90% довірчий інтервал: -72.3% до -58.7%)\n- **Висока впевненість** — це падіння стійке: всі 12 місяців нижче за результати року тому\n- Середньо 165 переглядів на місяць\n- Сезонний піки в березні (+30.4% від середнього)\n\n**Польська Вікіпедія**: у ній немає окремої статті про інтервальне голодування. \n\nЯ можу порівняти з польськими проксі-статтями, якщо ви згодні:\n- **\"Post\"** — статтяпро пост/голодування (ширша концепція)\n- **\"Dieta\"** — про дієти (ще ширша концепція)\n\nЧи хочете вимірювати інтерес у Польщі через одну з цих статей для порівняння?",
+      "cost": 0.0448602,
+      "turns": 5,
+      "seconds": 24.4,
+      "error": ""
+    }
+  ]
+}

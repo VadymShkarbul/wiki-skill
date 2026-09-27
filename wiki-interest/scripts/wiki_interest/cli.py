@@ -14,7 +14,7 @@ from typing import NoReturn
 from wiki_interest import __version__
 from wiki_interest.analysis import DEFAULT_MONTHS, SORT_KEYS, run_analysis
 from wiki_interest.cache import Cache, default_cache_dir
-from wiki_interest.editions import load_catalog
+from wiki_interest.editions import Catalog, load_catalog
 from wiki_interest.errors import SkillError
 from wiki_interest.http_client import HttpClient
 from wiki_interest.i18n import languages
@@ -51,10 +51,26 @@ class _Parser(argparse.ArgumentParser):
         sys.exit(EXIT_USAGE)
 
 
+def _recover_topic(args: argparse.Namespace, catalog: Catalog) -> None:
+    """`resolve --editions pl,cs astronomy`: --editions takes several words, so it swallowed
+    the topic. Take back the trailing words that are not editions."""
+    if args.topic:
+        return
+    words = args.editions
+    while words and not catalog.is_edition(words[-1]):
+        args.topic = f"{words.pop()} {args.topic or ''}".strip()
+    if not args.topic:
+        raise SkillError(
+            "No topic given.",
+            'Run: resolve "<topic>" --editions <codes>, e.g. resolve "astronomy" --editions uk',
+        )
+
+
 def _resolve(args: argparse.Namespace) -> int:
     client = make_client()
     catalog = load_catalog(client)
-    editions = catalog.parse(args.editions)
+    _recover_topic(args, catalog)
+    editions = catalog.parse(",".join(args.editions))
     concepts = find_candidates(
         client, catalog, args.topic, editions, search_lang=args.search_lang, limit=args.limit
     )
@@ -65,7 +81,7 @@ def _resolve(args: argparse.Namespace) -> int:
 def _analyze(args: argparse.Namespace) -> int:
     client = make_client()
     catalog = load_catalog(client)
-    editions = catalog.parse(args.editions)
+    editions = catalog.parse(",".join(args.editions))
     analysis = run_analysis(
         client,
         catalog,
@@ -112,9 +128,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Find Wikidata concepts for a topic and their article in each edition.",
     )
     resolve.add_argument(
-        "topic", help="Topic in words, a QID (Q333), lang:Title (pl:Astronomia), or an article URL."
+        "topic",
+        nargs="?",
+        help="Topic in words, a QID (Q333), lang:Title (pl:Astronomia), or an article URL.",
     )
-    resolve.add_argument("--editions", required=True, help="Edition codes, e.g. pl,cs.")
+    resolve.add_argument("--editions", required=True, nargs="+", help="Edition codes, e.g. pl,cs.")
     resolve.add_argument(
         "--search-lang", default="en", help="Language the topic is written in (default: en)."
     )
@@ -135,7 +153,7 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         help="Wikidata IDs from resolve (Q1666254), or lang:Title. Several = one broad topic.",
     )
-    analyze.add_argument("--editions", required=True, help="Edition codes, e.g. pl,cs.")
+    analyze.add_argument("--editions", required=True, nargs="+", help="Edition codes, e.g. pl,cs.")
     analyze.add_argument(
         "--months", type=int, default=DEFAULT_MONTHS, help="Trend window in months (default 24)."
     )

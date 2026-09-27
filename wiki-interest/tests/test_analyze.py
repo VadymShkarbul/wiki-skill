@@ -133,3 +133,6 @@ def test_outputs_are_complete_and_relay_ready(run, tmp_path):
     assert "Post (proxy)" in summary
     assert f"Re-run: {data['rerun']}" in summary
     assert summary.splitlines()[-1].startswith("Next: tell the user")
+    assert summary.splitlines()[1].startswith(
+        "Measured: views of the 'intermittent fasting' article (Q1666254)."
+    )

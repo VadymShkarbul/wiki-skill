@@ -1,0 +1,92 @@
+{
+  "case": "q2-astronomy-uk-in-ukrainian",
+  "run": 2,
+  "passed": true,
+  "cost": 0.0452,
+  "turns": 5,
+  "seconds": 30.3,
+  "graded": [
+    {
+      "turn": 1,
+      "checks": [
+        {
+          "check": "skill used",
+          "passed": true,
+          "evidence": "Skill tool: True; wiki.py commands: ['resolve', 'analyze']"
+        },
+        {
+          "check": "runs resolve -> analyze",
+          "passed": true,
+          "evidence": "ran: ['resolve', 'analyze']"
+        },
+        {
+          "check": "a command matches /analyze.*Q333/",
+          "passed": true,
+          "evidence": "uv run /tmp/wiki-eval-jxhhg6_u/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions uk"
+        },
+        {
+          "check": "answer matches /45[.,]5|46 ?%/",
+          "passed": true,
+          "evidence": "45,5"
+        },
+        {
+          "check": "answer matches /спад|зменш|знизи|скороч|падін|падає/",
+          "passed": true,
+          "evidence": "падає"
+        },
+        {
+          "check": "answer matches /висок|упевнен|довір/",
+          "passed": true,
+          "evidence": "Довір"
+        },
+        {
+          "check": "answer in uk",
+          "passed": true,
+          "evidence": "script looks like uk"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    "artifacts/20260927-092657-1fa099/analysis.json",
+    "artifacts/20260927-092657-1fa099/summary.txt"
+  ],
+  "transcript": [
+    {
+      "prompt": "Ми думаємо додати курс з астрономії до освітнього застосунку. Чи зростає інтерес до цієї теми в україномовній Вікіпедії, і наскільки цьому зростанню можна довіряти?",
+      "session_id": "81d02b5c-8aa4-4f66-a615-45b446122387",
+      "skill_invoked": true,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-jxhhg6_u/.claude/skills/wiki-interest/scripts/wiki.py resolve \"astronomy\" --editions uk",
+          "sub": "resolve",
+          "output": "Installed 13 packages in 32ms\nCandidates for 'astronomy' · editions: uk (Ukrainian)\n1. Q333 astronomy: natural science studying celestial objects and phenomena in the cosmos · 252 Wikipedias\n   uk: Астрономія\n2. Q3232273 Astronomy: American magazine · 9 Wikipedias\n   uk: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Журнал\" (broader concept: magazine, Q41298)\n3. Q12012641 astronomy: fictional class at Hogwarts · 2 Wikipedias\n   uk: NOT COVERED (no article on this concept)\n       no proxy found in this edition\n\nAMBIGUOUS: 'astronomy' names 3 different concepts (Q333 natural science studying celestial objects and phenomena in the cosmos; Q3232273 American magazine; Q12012641 fictional class at Hogwarts). Unless the user's message makes the meaning clear, ask which one they mean before running analyze.\n\nNext: pick the candidate that matches what the user means. If more than one fits, ask the user. If none fits, re-run resolve with the concept's encyclopedic name, e.g. \"English language\" instead of \"learning English\".\nThen run: uv run /tmp/wiki-eval-jxhhg6_u/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions uk",
+          "error": false
+        },
+        {
+          "cmd": "uv run /tmp/wiki-eval-jxhhg6_u/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions uk",
+          "sub": "analyze",
+          "output": "Analysis 20260927-092657-1fa099 · data through 2026-09-26\nMeasured: views of the 'astronomy' article (Q333). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.\nGrowth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).\n\nuk (Ukrainian) · Астрономія\n  DECLINING -45.5% [90% range -52.1% to -33.7%] · confidence HIGH · 437 views/month\n  - consistent: 10 of 12 months below the same month last year\n  - seasonal: peaks in September (+176.5% vs average)\n  - caveat: all of uk Wikipedia changed -24.6% year over year; share-of-edition figures remove this effect\n\nCaveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.13%); figures here use the daily data\nCaveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too\n\nSaved: /tmp/wiki-eval-jxhhg6_u/wiki-interest-runs/20260927-092657-1fa099 (analysis.json, summary.txt, trend.png, growth.png)\nRe-run: uv run /tmp/wiki-eval-jxhhg6_u/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions uk --months 24\nNext: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-jxhhg6_u/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-jxhhg6_u/wiki-interest-runs/20260927-092657-1fa099",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "## Результати\n\nЦе не дуже сприятливий сигнал. **Інтерес до астрономії в україномовній Вікіпедії падає:**\n\n**Астрономія (Астрономія)**\n- **Тренд:** зменшення на **45,5%** за останні 12 місяців [90% діапазон: -52,1% до -33,7%]\n- **Довіра:** **ВИСОКА** — це падіння послідовне (в 10 з 12 місяців було менше переглядів, ніж у відповідні місяці року раніше)\n- **Обсяг:** ~437 переглядів на місяць\n- **Сезонність:** піки у вересні (+176,5% порівняно з середнім значенням)\n\n### Важливе уточнення\n\nЦе падіння уже враховує загальне зменшення трафіку україномовної Вікіпедії на 24,6% за той же період. Тож реальне падіння інтересу саме до астрономії ще більш значне.\n\n### Що це означає для курсу\n\nСигнал від Вікіпедії показує, що увага до астрономії в україномовній аудиторії скорочується. Це варто перевірити через інші канали:\n\n- **Пошукові тренди** (Google Trends для України)\n- **Соціальні мережи** (які теми астрономії обговорюють українці)\n- **Освітні дані** (чи есть попит на подібні курси)\n- **Локальні фактори** (можливо, спеціалізовані аудиторії, які Вікіпедія не відображає)\n\nБажаєте порівняти цей результат з іншими мовами або розібратися з причинами падіння?",
+      "cost": 0.0451533,
+      "turns": 5,
+      "seconds": 30.3,
+      "error": ""
+    }
+  ]
+}

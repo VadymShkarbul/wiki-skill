@@ -183,14 +183,19 @@ def _edition_lines(r: EditionResult) -> list[str]:
 
 def format_summary(analysis: Analysis, data: dict[str, Any], out_dir: Path, command: str) -> str:
     current = analysis.current
-    concepts = "; ".join(f"{c.qid} {c.label}" for c in analysis.concepts)
+    measured = "; ".join(f"views of the {c.label!r} article ({c.qid})" for c in analysis.concepts)
     lines = [
         f"Analysis {data['run_id']} · data through {data['data_through']}",
-        f"Concepts: {concepts}",
+        # First, where it gets relayed: in evals Haiku stated a stand-in in 1 of 6 reports (D5).
+        (
+            f"Measured: {measured}. If the user asked about something narrower or different "
+            "(e.g. learning English, not the English language), say that this is a stand-in, "
+            "in your answer and in the report's bottom line."
+        ),
         (
             f"Growth = {current[0]}..{current[-1]} vs the same months a year earlier, as a share "
             f"of each edition's human pageviews. Trend window {analysis.window[0]}.."
-            f"{analysis.window[-1]}."
+            f"{analysis.window[-1]} ({analysis.months} months)."
         ),
         "",
     ]
@@ -213,7 +218,8 @@ def format_summary(analysis: Analysis, data: dict[str, Any], out_dir: Path, comm
         verdict = "clear difference" if d.clear else "no clear difference"
         lines.append(
             f"Comparison {d.leader} vs {d.other}: {d.growth_gap * 100:.1f} points apart "
-            f"[90% range {d.interval.low * 100:+.1f} to {d.interval.high * 100:+.1f}] -> {verdict}"
+            f"[90% range {d.interval.low * 100:+.1f} to {d.interval.high * 100:+.1f} points] -> "
+            f"{verdict}"
         )
     lines += [f"Caveat (all editions): {c}" for c in analysis.caveats]
     lines += [

@@ -1,0 +1,343 @@
+{
+  "schema": 1,
+  "tool": "wiki-interest 0.1.0",
+  "run_id": "20260927-092919-47323a",
+  "data_through": "2026-09-26",
+  "params": {
+    "concepts": [
+      "Q1666254"
+    ],
+    "editions": [
+      "uk",
+      "pl"
+    ],
+    "months": 24,
+    "proxies": [],
+    "sort": "growth"
+  },
+  "concepts": [
+    {
+      "qid": "Q1666254",
+      "label": "intermittent fasting"
+    }
+  ],
+  "window": {
+    "months": [
+      "2024-09",
+      "2026-08"
+    ],
+    "current": [
+      "2025-09",
+      "2026-08"
+    ],
+    "previous": [
+      "2024-09",
+      "2025-08"
+    ]
+  },
+  "editions": [
+    {
+      "code": "uk",
+      "name": "Ukrainian",
+      "articles": [
+        {
+          "concept": "Q1666254",
+          "title": "Інтервальне голодування",
+          "proxy": false,
+          "first_revision": "2019-11-10",
+          "first_viewed_day": "2019-11-10",
+          "probably_renamed_on": null
+        }
+      ],
+      "verdict": {
+        "direction": "declining",
+        "confidence": "high",
+        "reasons": [
+          "consistent: 12 of 12 months below the same month last year"
+        ]
+      },
+      "quadrant": null,
+      "growth": -0.663993,
+      "interval": [
+        -0.723446,
+        -0.58681
+      ],
+      "despiked_growth": -0.667074,
+      "months_agreeing": 12,
+      "pairs": 12,
+      "spike_share": 0.019842,
+      "spike_days": [
+        {
+          "date": "2025-03-16",
+          "views": 199
+        },
+        {
+          "date": "2026-07-01",
+          "views": 22
+        },
+        {
+          "date": "2026-03-04",
+          "views": 19
+        },
+        {
+          "date": "2026-06-19",
+          "views": 13
+        },
+        {
+          "date": "2026-06-28",
+          "views": 12
+        }
+      ],
+      "trend_per_year": -0.574262,
+      "median_views_per_month": 165.0,
+      "mean_share_per_million": 3.101895,
+      "edition_growth": -0.246219,
+      "seasonal_peak": {
+        "month": "03",
+        "lift": 1.304396
+      },
+      "data_from": "2019-12",
+      "caveats": [
+        "all of uk Wikipedia changed -24.6% year over year; share-of-edition figures remove this effect"
+      ],
+      "monthly": [
+        {
+          "month": "2023-10",
+          "views": 155.0,
+          "edition_total": 106892435.0,
+          "share_per_million": 1.450056
+        },
+        {
+          "month": "2023-11",
+          "views": 210.0,
+          "edition_total": 106244082.0,
+          "share_per_million": 1.976581
+        },
+        {
+          "month": "2023-12",
+          "views": 155.0,
+          "edition_total": 104235920.0,
+          "share_per_million": 1.487011
+        },
+        {
+          "month": "2024-01",
+          "views": 223.0,
+          "edition_total": 115282138.0,
+          "share_per_million": 1.934385
+        },
+        {
+          "month": "2024-02",
+          "views": 285.0,
+          "edition_total": 105744860.0,
+          "share_per_million": 2.695166
+        },
+        {
+          "month": "2024-03",
+          "views": 313.0,
+          "edition_total": 102268020.0,
+          "share_per_million": 3.060585
+        },
+        {
+          "month": "2024-04",
+          "views": 767.0,
+          "edition_total": 96763982.0,
+          "share_per_million": 7.926503
+        },
+        {
+          "month": "2024-05",
+          "views": 1232.0,
+          "edition_total": 92905741.0,
+          "share_per_million": 13.260752
+        },
+        {
+          "month": "2024-06",
+          "views": 867.0,
+          "edition_total": 63376161.0,
+          "share_per_million": 13.680223
+        },
+        {
+          "month": "2024-07",
+          "views": 592.0,
+          "edition_total": 59722919.0,
+          "share_per_million": 9.912442
+        },
+        {
+          "month": "2024-08",
+          "views": 490.0,
+          "edition_total": 66081529.0,
+          "share_per_million": 7.415083
+        },
+        {
+          "month": "2024-09",
+          "views": 740.0,
+          "edition_total": 74509285.0,
+          "share_per_million": 9.931648
+        },
+        {
+          "month": "2024-10",
+          "views": 812.0,
+          "edition_total": 83014264.0,
+          "share_per_million": 9.781452
+        },
+        {
+          "month": "2024-11",
+          "views": 856.0,
+          "edition_total": 83835060.0,
+          "share_per_million": 10.210525
+        },
+        {
+          "month": "2024-12",
+          "views": 705.0,
+          "edition_total": 84431475.0,
+          "share_per_million": 8.349967
+        },
+        {
+          "month": "2025-01",
+          "views": 1668.0,
+          "edition_total": 94111809.0,
+          "share_per_million": 17.723599
+        },
+        {
+          "month": "2025-02",
+          "views": 791.0,
+          "edition_total": 81951788.0,
+          "share_per_million": 9.652016
+        },
+        {
+          "month": "2025-03",
+          "views": 1287.0,
+          "edition_total": 79505120.0,
+          "share_per_million": 16.187637
+        },
+        {
+          "month": "2025-04",
+          "views": 818.0,
+          "edition_total": 72146878.0,
+          "share_per_million": 11.337982
+        },
+        {
+          "month": "2025-05",
+          "views": 510.0,
+          "edition_total": 69040303.0,
+          "share_per_million": 7.38699
+        },
+        {
+          "month": "2025-06",
+          "views": 203.0,
+          "edition_total": 53652676.0,
+          "share_per_million": 3.783595
+        },
+        {
+          "month": "2025-07",
+          "views": 207.0,
+          "edition_total": 62209478.0,
+          "share_per_million": 3.327467
+        },
+        {
+          "month": "2025-08",
+          "views": 192.0,
+          "edition_total": 61801817.0,
+          "share_per_million": 3.106705
+        },
+        {
+          "month": "2025-09",
+          "views": 199.0,
+          "edition_total": 61256706.0,
+          "share_per_million": 3.248624
+        },
+        {
+          "month": "2025-10",
+          "views": 163.0,
+          "edition_total": 66044662.0,
+          "share_per_million": 2.468027
+        },
+        {
+          "month": "2025-11",
+          "views": 158.0,
+          "edition_total": 67137685.0,
+          "share_per_million": 2.353373
+        },
+        {
+          "month": "2025-12",
+          "views": 167.0,
+          "edition_total": 55497356.0,
+          "share_per_million": 3.009152
+        },
+        {
+          "month": "2026-01",
+          "views": 194.0,
+          "edition_total": 60471976.0,
+          "share_per_million": 3.208098
+        },
+        {
+          "month": "2026-02",
+          "views": 129.0,
+          "edition_total": 51614348.0,
+          "share_per_million": 2.499305
+        },
+        {
+          "month": "2026-03",
+          "views": 223.0,
+          "edition_total": 55114806.0,
+          "share_per_million": 4.0461
+        },
+        {
+          "month": "2026-04",
+          "views": 260.0,
+          "edition_total": 53442038.0,
+          "share_per_million": 4.865084
+        },
+        {
+          "month": "2026-05",
+          "views": 225.0,
+          "edition_total": 55950057.0,
+          "share_per_million": 4.021444
+        },
+        {
+          "month": "2026-06",
+          "views": 143.0,
+          "edition_total": 48312008.0,
+          "share_per_million": 2.959927
+        },
+        {
+          "month": "2026-07",
+          "views": 129.0,
+          "edition_total": 52999047.0,
+          "share_per_million": 2.434006
+        },
+        {
+          "month": "2026-08",
+          "views": 107.0,
+          "edition_total": 50720483.0,
+          "share_per_million": 2.109601
+        }
+      ]
+    }
+  ],
+  "not_covered": [
+    {
+      "code": "pl",
+      "name": "Polish"
+    }
+  ],
+  "excluded_concepts": {},
+  "like_for_like": true,
+  "comparison": [],
+  "caveats": [
+    "Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.13%); figures here use the daily data",
+    "Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too"
+  ],
+  "method": [
+    "Pageviews measure attention on Wikipedia, not demand or willingness to pay.",
+    "Interest is the topic articles' share of all human pageviews in that edition (views per million), so edition size and edition-wide trends cancel out.",
+    "Growth compares each month with the same month a year earlier, which cancels seasonality.",
+    "The 90% range comes from resampling those month pairs; with few pairs it can be slightly too narrow.",
+    "Only each article's current title is counted: views of redirects and former titles are not.",
+    "Human traffic as classified by Wikimedia (agent=user); some automated traffic may remain."
+  ],
+  "files": {
+    "trend": "trend.png",
+    "growth": "growth.png"
+  },
+  "rerun": "uv run /tmp/wiki-eval-z2iq09g5/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions uk,pl --months 24"
+}

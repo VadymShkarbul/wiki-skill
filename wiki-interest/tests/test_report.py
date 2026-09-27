@@ -72,13 +72,20 @@ def test_parsing(run):
     )
 
 
+def test_abbreviations_are_not_sentence_ends():
+    story = narrative.Narrative(
+        "T", "Flat in tr (e.g. +0.6%) vs. de. Declining in pl. Fine.", ["b"]
+    )
+    narrative.check_length(story, Path("narrative.md"))
+
+
 @pytest.mark.parametrize(
     ("field", "value", "message"),
     [
         ("title", "x" * 111, "the title has 111 characters"),
         ("bottom_line", "One. Two. Three. Four.", "4 sentences"),
         ("bullets", ["a"] * 5, "5 bullets"),
-        ("bullets", ["b" * 171], "bullets [1] are over 170"),
+        ("bullets", ["b" * 221], "bullets [1] are over 220"),
     ],
 )
 def test_length_budget(field, value, message):
@@ -231,4 +238,24 @@ def test_big_baskets_list_two_titles_and_fit(run):
         edition["articles"] = [dict(edition["articles"][0], title=f"Article {n}") for n in range(6)]
     (run / "analysis.json").write_text(json.dumps(data), encoding="utf-8")
     write(run, GOOD)
+    assert render(run, "en").exists()
+
+
+def test_max_length_narrative_with_8_editions_fits(run):
+    """Review fix: text within the budgets plus a full table used to overflow the page."""
+    data = json.loads((run / "analysis.json").read_text(encoding="utf-8"))
+    editions = [
+        dict(json.loads(json.dumps(e)), code=f"x{i}") for i, e in enumerate(data["editions"] * 2)
+    ]
+    data["editions"] = editions[:8]
+    data["params"]["editions"] = [e["code"] for e in editions[:8]]
+    (run / "analysis.json").write_text(json.dumps(data), encoding="utf-8")
+    sentence = (
+        "Attention to English is flat in Turkish and German but declining in Polish, Czech "
+        "and Ukrainian over the last year"
+    )
+    bottom = ". ".join([sentence[:155]] * 3) + "."
+    bullet = ("Validate demand in Turkey first: a stable audience and a clear lead, " * 4)[:219]
+    title = "Which language audiences should our English-learning app research next, and why?"
+    write(run, f"# {title}\n\n## Bottom line\n{bottom[:479]}\n\n## Next\n" + f"- {bullet}\n" * 4)
     assert render(run, "en").exists()

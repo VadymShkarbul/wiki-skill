@@ -19,3 +19,18 @@ All commands run from the skill dir (`wiki-interest/`). Only `uv` is required.
 |---|---|
 | `WIKI_INTEREST_CACHE_DIR` | Cache location (default: `$XDG_CACHE_HOME/wiki-interest` or `~/.cache/wiki-interest`) |
 | `WIKI_INTEREST_CONTACT` | Contact in the User-Agent sent to Wikimedia (default: the author's GitHub URL) |
+
+## Evals on a cheap model
+
+Needs the `claude` CLI, logged in. Each run uses a fresh temp workspace that contains only
+this skill, with user-level skills, plugins and MCP servers excluded.
+
+| Task | Command |
+|---|---|
+| All cases, 3 runs each, on Haiku | `uv run evals/run.py --model haiku --runs 3` |
+| One case while iterating | `uv run evals/run.py --case 'q1-*' --runs 1` |
+
+Cases and checks: `evals/cases.json`. Results: `evals/runs/<stamp>-<model>/` (gitignored) with
+`summary.md`, and per run the transcripts, the `result.json` grades, and artifacts. The final
+evidence is kept in `evals/evidence/` and summarized in `evals/RESULTS.md`. Log every
+SKILL.md change driven by a run in `evals/iteration-log.md`.

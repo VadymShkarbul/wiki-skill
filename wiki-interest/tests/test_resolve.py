@@ -1,6 +1,9 @@
 """Resolve behavior on recorded live responses (recorded 2026-09-27)."""
 
+import argparse
+
 import pytest
+from wiki_interest.cli import _recover_topic
 from wiki_interest.editions import load_catalog
 from wiki_interest.errors import SkillError
 from wiki_interest.resolve import (
@@ -114,8 +117,18 @@ def test_spec_q1_polish_not_covered_with_broader_proxies(api, catalog):
 
 
 def test_ambiguous_topic_lists_notable_meanings_first(api, catalog):
-    concepts = find_candidates(api, catalog, "Mercury", eds(catalog, "en,pl"))
+    editions = eds(catalog, "en,pl")
+    concepts = find_candidates(api, catalog, "Mercury", editions)
     assert [c.qid for c in concepts] == ["Q308", "Q925", "Q1150"]  # planet, element, god
+    text = format_candidates("Mercury", editions, concepts, CMD)
+    assert "AMBIGUOUS: 'Mercury' names 3 different concepts" in text
+    assert "ask which one they mean before running analyze" in text
+
+
+def test_a_single_clear_concept_is_not_flagged_ambiguous(api, catalog):
+    editions = eds(catalog, "pl,cs")
+    concepts = find_candidates(api, catalog, "intermittent fasting", editions)
+    assert "AMBIGUOUS" not in format_candidates("intermittent fasting", editions, concepts, CMD)
 
 
 def test_exact_matches_rank_above_popular_prefix_matches(api, catalog):
@@ -199,3 +212,20 @@ def test_run_now_cue_only_when_the_concept_is_unambiguous(catalog):
     ambiguous = format_candidates("Java", editions, [one, two], CMD)
     assert "Run it now" not in ambiguous
     assert "If more than one fits, ask the user." in ambiguous
+
+
+def test_minor_homonyms_are_not_ambiguous(catalog):
+    editions = eds(catalog, "es")
+    game = Concept("Q718", "chess", "strategy board game", 202, {"es": "Ajedrez"}, exact=True)
+    musical = Concept("Q843284", "Chess", "musical", 19, {"es": "Chess"}, exact=True)
+    surname = Concept("Q16865538", "Chess", "family name", 1, {}, exact=True)
+    assert "AMBIGUOUS" not in format_candidates("chess", editions, [game, musical, surname], CMD)
+
+
+def test_topic_swallowed_by_editions_is_recovered(catalog):
+    args = argparse.Namespace(topic=None, editions=["pl,cs", "intermittent", "fasting"])
+    _recover_topic(args, catalog)
+    assert (args.topic, args.editions) == ("intermittent fasting", ["pl,cs"])
+    args = argparse.Namespace(topic=None, editions=["pl", "cs"])
+    with pytest.raises(SkillError, match="No topic given"):
+        _recover_topic(args, catalog)

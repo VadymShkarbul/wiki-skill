@@ -1,0 +1,120 @@
+{
+  "case": "followup-add-slovak-3y",
+  "run": 3,
+  "passed": true,
+  "cost": 0.0674,
+  "turns": 8,
+  "seconds": 39.2,
+  "graded": [
+    {
+      "turn": 1,
+      "checks": [
+        {
+          "check": "skill used",
+          "passed": true,
+          "evidence": "Skill tool: True; wiki.py commands: ['resolve', 'analyze']"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "checks": [
+        {
+          "check": "runs analyze",
+          "passed": true,
+          "evidence": "ran: ['resolve', 'analyze']"
+        },
+        {
+          "check": "a command matches /analyze.*--editions[ =][^ ]*sk/",
+          "passed": true,
+          "evidence": "uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs,sk --months 36"
+        },
+        {
+          "check": "a command matches /--months[ =]36/",
+          "passed": true,
+          "evidence": "uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs,sk --months 36"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    "artifacts/20260927-092748-98afa4/analysis.json",
+    "artifacts/20260927-092748-98afa4/summary.txt",
+    "artifacts/20260927-092803-f4dca6/analysis.json",
+    "artifacts/20260927-092803-f4dca6/summary.txt"
+  ],
+  "transcript": [
+    {
+      "prompt": "Compare the growth of interest in intermittent fasting in Polish and Czech Wikipedia over the last two years.",
+      "session_id": "9bab59f5-e7fb-4d13-8d3e-dce2b7ce526d",
+      "skill_invoked": true,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py resolve \"intermittent fasting\" --editions pl,cs",
+          "sub": "resolve",
+          "output": "Installed 13 packages in 21ms\nCandidates for 'intermittent fasting' · editions: pl (Polish), cs (Czech)\n1. Q1666254 intermittent fasting: a diet that cycles between a period of fasting and non-fasting · 31 Wikipedias\n   pl: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Post\" (broader concept: fasting, Q44602); \"Dieta\" (broader concept: diet, Q474191)\n   cs: Přerušovaný půst\n\nNext: pick the candidate that matches what the user means. If more than one fits, ask the user. If none fits, re-run resolve with the concept's encyclopedic name, e.g. \"English language\" instead of \"learning English\".\nThen run: uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs\nRun it now, without --proxy: the covered editions' results don't need the user's answer. Then tell the user that pl is not covered and offer the proxy.\nAdd --proxy pl:Post only in a later run, after the user agrees.",
+          "error": false
+        },
+        {
+          "cmd": "uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs --months 24",
+          "sub": "analyze",
+          "output": "Analysis 20260927-092748-98afa4 · data through 2026-09-26\nMeasured: views of the 'intermittent fasting' article (Q1666254). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.\nGrowth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).\n\ncs (Czech) · Přerušovaný půst\n  DECLINING -47.7% [90% range -62.5% to -27.9%] · confidence MEDIUM · 146 views/month\n  - consistent: 11 of 12 months below the same month last year\n  - spike-driven: without 10 spike days growth is -34.4%\n  - spike days (causes unknown, do not guess): 2025-04-14 (508 views), 2025-08-15 (164 views), 2024-10-17 (110 views)\n\npl (Polish): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.\nCaveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.29%); figures here use the daily data\nCaveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too\n\nSaved: /tmp/wiki-eval-wpl33o8l/wiki-interest-runs/20260927-092748-98afa4 (analysis.json, summary.txt, trend.png, growth.png)\nRe-run: uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs --months 24\nNext: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-wpl33o8l/wiki-interest-runs/20260927-092748-98afa4",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "## Results\n\n**Czech Wikipedia** has a dedicated article on intermittent fasting (\"Přerušovaný půst\"), and interest is **declining significantly**:\n\n- **Trend**: Down 47.7% over the last 12 months (Sept 2025–Aug 2026 vs Sept 2024–Aug 2025)\n- **Confidence**: Medium\n- **90% range**: -62.5% to -27.9%\n- **Monthly views**: ~146 views/month\n- **Pattern**: Decline is consistent—11 of 12 months showed fewer views than the same months a year earlier\n- **Note**: Some spike days occurred (April 14 and August 15, 2025; October 17, 2024), but without them the decline would be -34.4%\n\n**Polish Wikipedia** has **no dedicated article** on intermittent fasting. To compare, I can use a broader proxy article like \"Post\" (fasting in general, Q44602) or \"Dieta\" (diet, Q474191), which would measure interest in fasting/diet more broadly rather than intermittent fasting specifically.\n\n**Would you like me to analyze Polish Wikipedia using one of these proxy articles?** If so, I can compare the actual Polish interest in fasting/diet concepts against the Czech intermittent fasting data. Keep in mind the proxy would measure something slightly different—interest in fasting or diet generally, not intermittent fasting specifically.",
+      "cost": 0.044952200000000005,
+      "turns": 5,
+      "seconds": 25.4,
+      "error": ""
+    },
+    {
+      "prompt": "Add Slovak Wikipedia too, and use the last three years instead.",
+      "session_id": "9bab59f5-e7fb-4d13-8d3e-dce2b7ce526d",
+      "skill_invoked": false,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py resolve \"intermittent fasting\" --editions pl,cs,sk",
+          "sub": "resolve",
+          "output": "Candidates for 'intermittent fasting' · editions: pl (Polish), cs (Czech), sk (Slovak)\n1. Q1666254 intermittent fasting: a diet that cycles between a period of fasting and non-fasting · 31 Wikipedias\n   pl: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Post\" (broader concept: fasting, Q44602); \"Dieta\" (broader concept: diet, Q474191)\n   cs: Přerušovaný půst\n   sk: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Pôst\" (broader concept: fasting, Q44602)\n\nNext: pick the candidate that matches what the user means. If more than one fits, ask the user. If none fits, re-run resolve with the concept's encyclopedic name, e.g. \"English language\" instead of \"learning English\".\nThen run: uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs,sk\nRun it now, without --proxy: the covered editions' results don't need the user's answer. Then tell the user that pl, sk is not covered and offer the proxy.\nAdd --proxy pl:Post only in a later run, after the user agrees.",
+          "error": false
+        },
+        {
+          "cmd": "uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs,sk --months 36",
+          "sub": "analyze",
+          "output": "Analysis 20260927-092803-f4dca6 · data through 2026-09-26\nMeasured: views of the 'intermittent fasting' article (Q1666254). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.\nGrowth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2023-09..2026-08 (36 months).\n\ncs (Czech) · Přerušovaný půst\n  DECLINING -47.7% [90% range -62.5% to -27.9%] · confidence MEDIUM · 146 views/month\n  - consistent: 11 of 12 months below the same month last year\n  - spike-driven: without 10 spike days growth is -34.4%\n  - spike days (causes unknown, do not guess): 2025-04-14 (508 views), 2025-08-15 (164 views), 2024-10-17 (110 views)\n\npl (Polish): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.\nsk (Slovak): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.\nCaveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.29%); figures here use the daily data\nCaveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too\n\nSaved: /tmp/wiki-eval-wpl33o8l/wiki-interest-runs/20260927-092803-f4dca6 (analysis.json, summary.txt, trend.png, growth.png)\nRe-run: uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs,sk --months 36\nNext: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-wpl33o8l/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-wpl33o8l/wiki-interest-runs/20260927-092803-f4dca6",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "## Results (Last 3 Years)\n\n**Czech Wikipedia** is the only edition with a dedicated intermittent fasting article, and interest is **declining**:\n\n- **Trend**: Down 47.7% over the last 12 months (Sept 2025–Aug 2026 vs Sept 2024–Aug 2025)\n- **Confidence**: Medium\n- **90% range**: -62.5% to -27.9%\n- **Monthly views**: ~146 views/month\n- **Pattern**: Consistent decline in 11 of 12 months; without spike days the decline would be -34.4%\n\n**Polish and Slovak Wikipedia** both have **no dedicated articles** on intermittent fasting. To include them in the comparison, I can use proxy articles:\n\n- **Polish**: \"Post\" (fasting in general) or \"Dieta\" (diet)\n- **Slovak**: \"Pôst\" (fasting in general)\n\nThese proxies would show interest in fasting/diet more broadly, not specifically intermittent fasting. **Should I add these proxies to see how Polish and Slovak compare to Czech's decline?**",
+      "cost": 0.022478700000000004,
+      "turns": 3,
+      "seconds": 13.8,
+      "error": ""
+    }
+  ]
+}

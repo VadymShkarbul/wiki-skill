@@ -1,0 +1,68 @@
+{
+  "case": "ambiguous-mercury",
+  "run": 1,
+  "passed": true,
+  "cost": 0.0352,
+  "turns": 4,
+  "seconds": 16.8,
+  "graded": [
+    {
+      "turn": 1,
+      "checks": [
+        {
+          "check": "skill used",
+          "passed": true,
+          "evidence": "Skill tool: True; wiki.py commands: ['resolve']"
+        },
+        {
+          "check": "runs resolve",
+          "passed": true,
+          "evidence": "ran: ['resolve']"
+        },
+        {
+          "check": "answer matches /planet|element|god|mytholog|metal|quicksilver/",
+          "passed": true,
+          "evidence": "planet"
+        },
+        {
+          "check": "answer matches /\\?|assum|interpret/",
+          "passed": true,
+          "evidence": "?"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    }
+  ],
+  "artifacts": [],
+  "transcript": [
+    {
+      "prompt": "Is interest in Mercury growing in English and German Wikipedia?",
+      "session_id": "ba39229f-44a4-4736-8f85-f10c436574d1",
+      "skill_invoked": true,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-vghqkygc/.claude/skills/wiki-interest/scripts/wiki.py resolve \"Mercury\" --editions en,de",
+          "sub": "resolve",
+          "output": "Installed 13 packages in 36ms\nCandidates for 'Mercury' · editions: en (English), de (German)\n1. Q308 Mercury: first planet from the Solar System and smallest among all, tellurian and with extreme temperatures · 250 Wikipedias\n   en: Mercury (planet)\n   de: Merkur (Planet)\n2. Q925 mercury: chemical element with symbol Hg and atomic number 80 · 176 Wikipedias\n   en: Mercury (element)\n   de: Quecksilber\n3. Q1150 Mercury: Roman god of trade, merchants, thieves and travel · 84 Wikipedias\n   en: Mercury (mythology)\n   de: Mercurius\n\nAMBIGUOUS: 'Mercury' names 3 different concepts (Q308 first planet from the Solar System and smallest among all, tellurian and with extreme temperatures; Q925 chemical element with symbol Hg and atomic number 80; Q1150 Roman god of trade, merchants, thieves and travel). Unless the user's message makes the meaning clear, ask which one they mean before running analyze.\n\nNext: pick the candidate that matches what the user means. If more than one fits, ask the user. If none fits, re-run resolve with the concept's encyclopedic name, e.g. \"English language\" instead of \"learning English\".\nThen run: uv run /tmp/wiki-eval-vghqkygc/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q308 --editions en,de",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "Mercury is ambiguous—it can refer to three different things:\n\n1. **Q308** — Mercury the planet (smallest planet, closest to the Sun)\n2. **Q925** — Mercury the chemical element (liquid metal, symbol Hg)\n3. **Q1150** — Mercury the Roman god\n\nWhich one did you mean? I'm guessing the planet is most likely, but let me know and I'll analyze the pageview trends for English and German Wikipedia.",
+      "cost": 0.0351618,
+      "turns": 4,
+      "seconds": 16.8,
+      "error": ""
+    }
+  ]
+}

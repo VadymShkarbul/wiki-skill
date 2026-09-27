@@ -1,0 +1,353 @@
+{
+  "schema": 1,
+  "tool": "wiki-interest 0.1.0",
+  "run_id": "20260927-092810-a176c4",
+  "data_through": "2026-09-26",
+  "params": {
+    "concepts": [
+      "Q1666254"
+    ],
+    "editions": [
+      "cs"
+    ],
+    "months": 24,
+    "proxies": [],
+    "sort": "growth"
+  },
+  "concepts": [
+    {
+      "qid": "Q1666254",
+      "label": "intermittent fasting"
+    }
+  ],
+  "window": {
+    "months": [
+      "2024-09",
+      "2026-08"
+    ],
+    "current": [
+      "2025-09",
+      "2026-08"
+    ],
+    "previous": [
+      "2024-09",
+      "2025-08"
+    ]
+  },
+  "editions": [
+    {
+      "code": "cs",
+      "name": "Czech",
+      "articles": [
+        {
+          "concept": "Q1666254",
+          "title": "Přerušovaný půst",
+          "proxy": false,
+          "first_revision": "2020-10-28",
+          "first_viewed_day": "2020-10-28",
+          "probably_renamed_on": null
+        }
+      ],
+      "verdict": {
+        "direction": "declining",
+        "confidence": "medium",
+        "reasons": [
+          "consistent: 11 of 12 months below the same month last year",
+          "spike-driven: without 10 spike days growth is -34.4%"
+        ]
+      },
+      "quadrant": null,
+      "growth": -0.477013,
+      "interval": [
+        -0.624978,
+        -0.279489
+      ],
+      "despiked_growth": -0.344001,
+      "months_agreeing": 11,
+      "pairs": 12,
+      "spike_share": 0.162559,
+      "spike_days": [
+        {
+          "date": "2025-04-14",
+          "views": 508
+        },
+        {
+          "date": "2025-08-15",
+          "views": 164
+        },
+        {
+          "date": "2024-10-17",
+          "views": 110
+        },
+        {
+          "date": "2025-04-15",
+          "views": 95
+        },
+        {
+          "date": "2024-10-16",
+          "views": 81
+        },
+        {
+          "date": "2025-09-24",
+          "views": 77
+        },
+        {
+          "date": "2024-10-18",
+          "views": 74
+        },
+        {
+          "date": "2025-08-16",
+          "views": 52
+        },
+        {
+          "date": "2024-11-05",
+          "views": 50
+        },
+        {
+          "date": "2024-12-09",
+          "views": 23
+        }
+      ],
+      "trend_per_year": -0.471838,
+      "median_views_per_month": 146.0,
+      "mean_share_per_million": 3.038837,
+      "edition_growth": -0.125672,
+      "seasonal_peak": null,
+      "data_from": "2020-11",
+      "caveats": [],
+      "monthly": [
+        {
+          "month": "2023-10",
+          "views": 305.0,
+          "edition_total": 74637445.0,
+          "share_per_million": 4.086421
+        },
+        {
+          "month": "2023-11",
+          "views": 329.0,
+          "edition_total": 73550281.0,
+          "share_per_million": 4.47313
+        },
+        {
+          "month": "2023-12",
+          "views": 296.0,
+          "edition_total": 71402931.0,
+          "share_per_million": 4.145488
+        },
+        {
+          "month": "2024-01",
+          "views": 773.0,
+          "edition_total": 85518969.0,
+          "share_per_million": 9.03893
+        },
+        {
+          "month": "2024-02",
+          "views": 593.0,
+          "edition_total": 71238611.0,
+          "share_per_million": 8.324138
+        },
+        {
+          "month": "2024-03",
+          "views": 770.0,
+          "edition_total": 77071534.0,
+          "share_per_million": 9.990718
+        },
+        {
+          "month": "2024-04",
+          "views": 537.0,
+          "edition_total": 73450167.0,
+          "share_per_million": 7.311079
+        },
+        {
+          "month": "2024-05",
+          "views": 749.0,
+          "edition_total": 81288418.0,
+          "share_per_million": 9.214105
+        },
+        {
+          "month": "2024-06",
+          "views": 491.0,
+          "edition_total": 63852880.0,
+          "share_per_million": 7.689551
+        },
+        {
+          "month": "2024-07",
+          "views": 526.0,
+          "edition_total": 60287958.0,
+          "share_per_million": 8.724794
+        },
+        {
+          "month": "2024-08",
+          "views": 447.0,
+          "edition_total": 61570727.0,
+          "share_per_million": 7.259944
+        },
+        {
+          "month": "2024-09",
+          "views": 393.0,
+          "edition_total": 62292789.0,
+          "share_per_million": 6.308916
+        },
+        {
+          "month": "2024-10",
+          "views": 634.0,
+          "edition_total": 70881496.0,
+          "share_per_million": 8.944506
+        },
+        {
+          "month": "2024-11",
+          "views": 329.0,
+          "edition_total": 68852170.0,
+          "share_per_million": 4.778353
+        },
+        {
+          "month": "2024-12",
+          "views": 294.0,
+          "edition_total": 70360761.0,
+          "share_per_million": 4.178465
+        },
+        {
+          "month": "2025-01",
+          "views": 489.0,
+          "edition_total": 83396601.0,
+          "share_per_million": 5.863548
+        },
+        {
+          "month": "2025-02",
+          "views": 272.0,
+          "edition_total": 69753016.0,
+          "share_per_million": 3.899473
+        },
+        {
+          "month": "2025-03",
+          "views": 366.0,
+          "edition_total": 74797829.0,
+          "share_per_million": 4.89319
+        },
+        {
+          "month": "2025-04",
+          "views": 958.0,
+          "edition_total": 67010206.0,
+          "share_per_million": 14.29633
+        },
+        {
+          "month": "2025-05",
+          "views": 225.0,
+          "edition_total": 73630159.0,
+          "share_per_million": 3.055813
+        },
+        {
+          "month": "2025-06",
+          "views": 238.0,
+          "edition_total": 56271438.0,
+          "share_per_million": 4.229499
+        },
+        {
+          "month": "2025-07",
+          "views": 157.0,
+          "edition_total": 61159851.0,
+          "share_per_million": 2.567044
+        },
+        {
+          "month": "2025-08",
+          "views": 386.0,
+          "edition_total": 57515129.0,
+          "share_per_million": 6.711278
+        },
+        {
+          "month": "2025-09",
+          "views": 270.0,
+          "edition_total": 57306454.0,
+          "share_per_million": 4.711511
+        },
+        {
+          "month": "2025-10",
+          "views": 141.0,
+          "edition_total": 66546281.0,
+          "share_per_million": 2.118826
+        },
+        {
+          "month": "2025-11",
+          "views": 151.0,
+          "edition_total": 72883460.0,
+          "share_per_million": 2.071801
+        },
+        {
+          "month": "2025-12",
+          "views": 218.0,
+          "edition_total": 59967317.0,
+          "share_per_million": 3.635314
+        },
+        {
+          "month": "2026-01",
+          "views": 474.0,
+          "edition_total": 67410000.0,
+          "share_per_million": 7.031598
+        },
+        {
+          "month": "2026-02",
+          "views": 196.0,
+          "edition_total": 58306397.0,
+          "share_per_million": 3.361552
+        },
+        {
+          "month": "2026-03",
+          "views": 179.0,
+          "edition_total": 58040192.0,
+          "share_per_million": 3.08407
+        },
+        {
+          "month": "2026-04",
+          "views": 135.0,
+          "edition_total": 54848117.0,
+          "share_per_million": 2.461342
+        },
+        {
+          "month": "2026-05",
+          "views": 109.0,
+          "edition_total": 59792880.0,
+          "share_per_million": 1.82296
+        },
+        {
+          "month": "2026-06",
+          "views": 115.0,
+          "edition_total": 53683305.0,
+          "share_per_million": 2.142193
+        },
+        {
+          "month": "2026-07",
+          "views": 91.0,
+          "edition_total": 53131065.0,
+          "share_per_million": 1.712746
+        },
+        {
+          "month": "2026-08",
+          "views": 119.0,
+          "edition_total": 51467770.0,
+          "share_per_million": 2.312127
+        }
+      ]
+    }
+  ],
+  "not_covered": [],
+  "excluded_concepts": {},
+  "like_for_like": true,
+  "comparison": [],
+  "caveats": [
+    "Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.29%); figures here use the daily data",
+    "Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too"
+  ],
+  "method": [
+    "Pageviews measure attention on Wikipedia, not demand or willingness to pay.",
+    "Interest is the topic articles' share of all human pageviews in that edition (views per million), so edition size and edition-wide trends cancel out.",
+    "Growth compares each month with the same month a year earlier, which cancels seasonality.",
+    "The 90% range comes from resampling those month pairs; with few pairs it can be slightly too narrow.",
+    "Only each article's current title is counted: views of redirects and former titles are not.",
+    "Human traffic as classified by Wikimedia (agent=user); some automated traffic may remain."
+  ],
+  "files": {
+    "trend": "trend.png",
+    "growth": "growth.png"
+  },
+  "rerun": "uv run /tmp/wiki-eval-xk17kruh/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions cs --months 24"
+}

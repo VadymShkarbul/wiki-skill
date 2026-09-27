@@ -14,10 +14,10 @@ from pathlib import Path
 from wiki_interest.errors import SkillError
 
 TITLE_MAX = 110
-BOTTOM_MAX_CHARS = 420
+BOTTOM_MAX_CHARS = 480  # about four lines at 9.5 pt
 BOTTOM_MAX_SENTENCES = 3
 BULLETS_MAX = 4
-BULLET_MAX_CHARS = 170
+BULLET_MAX_CHARS = 220  # two lines at 9 pt
 COUNTS = set(range(13))  # "3 editions", "12 months"; never percentages (see check_numbers)
 SHOWN_UNKNOWN = 5
 
@@ -50,6 +50,9 @@ MAGNITUDES = {
     "млн": 1e6,
 }
 PLACEHOLDER = re.compile(r"<[^<>\n]{3,}>")  # one line: "<100 ... ->" is not a placeholder
+ABBREVIATIONS = re.compile(
+    r"\b(?:e\.g|i\.e|vs|etc|approx|cf|incl|No|т\.зв|напр|тис|млн)\.", re.IGNORECASE
+)
 SENTENCE_END = re.compile(r"[.!?](?:\s|$)")
 
 
@@ -100,7 +103,7 @@ def check_length(n: Narrative, path: Path) -> None:
     problems = []
     if len(n.title) > TITLE_MAX:
         problems.append(f"the title has {len(n.title)} characters (max {TITLE_MAX})")
-    sentences = len(SENTENCE_END.findall(n.bottom_line + " "))
+    sentences = len(SENTENCE_END.findall(ABBREVIATIONS.sub("", n.bottom_line) + " "))
     if sentences > BOTTOM_MAX_SENTENCES or len(n.bottom_line) > BOTTOM_MAX_CHARS:
         problems.append(
             f"the bottom line has {sentences} sentences and {len(n.bottom_line)} characters "

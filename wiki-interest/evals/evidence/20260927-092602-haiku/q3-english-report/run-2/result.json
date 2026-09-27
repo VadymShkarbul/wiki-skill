@@ -1,0 +1,72 @@
+{
+  "case": "q3-english-report",
+  "run": 2,
+  "passed": true,
+  "cost": 0.0462,
+  "turns": 5,
+  "seconds": 31.9,
+  "graded": [
+    {
+      "turn": 1,
+      "checks": [
+        {
+          "check": "skill used",
+          "passed": true,
+          "evidence": "Skill tool: True; wiki.py commands: ['resolve', 'analyze']"
+        },
+        {
+          "check": "runs resolve -> analyze",
+          "passed": true,
+          "evidence": "ran: ['resolve', 'analyze']"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "one of 2 acceptable paths",
+          "passed": true,
+          "evidence": "esl + proxy offer"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    "artifacts/20260927-092702-76529c/analysis.json",
+    "artifacts/20260927-092702-76529c/summary.txt"
+  ],
+  "transcript": [
+    {
+      "prompt": "We're building a language-learning app. Compare interest in learning English in the Polish, Czech, Ukrainian, German and Turkish Wikipedias and prepare a short one-page report: which audiences should we research next, and why?",
+      "session_id": "458a7bc3-220a-43db-ae9f-a4e20b86614d",
+      "skill_invoked": true,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-irlbslh7/.claude/skills/wiki-interest/scripts/wiki.py resolve \"English language learning\" --editions pl,cs,uk,de,tr",
+          "sub": "resolve",
+          "output": "Installed 13 packages in 27ms\nCandidates for 'English language learning' · editions: pl (Polish), cs (Czech), uk (Ukrainian), de (German), tr (Turkish)\n1. Q130192 English as a second or foreign language: use of English by speakers with different native languages · 14 Wikipedias\n   pl: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Język angielski\" (broader concept: English, Q1860); \"TEFL\" (broader concept: teaching English as a second or foreign language, Q7691272); \"Dyscyplina naukowa\" (broader concept: academic discipline, Q11862829)\n   cs: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Angličtina\" (broader concept: English, Q1860); \"Výuka cizích jazyků\" (broader concept: second-language education, Q1455196); \"Vysokoškolský studijní program\" (broader concept: academic discipline, Q11862829)\n   uk: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Англійська мова\" (broader concept: English, Q1860); \"Мовна освіта\" (broader concept: second-language education, Q1455196); \"Навчальна дисципліна\" (broader concept: academic discipline, Q11862829)\n   de: Englisch als Zweitsprache\n   tr: Yabancı dil olarak İngilizce eğitimi\n\nNext: pick the candidate that matches what the user means. If more than one fits, ask the user. If none fits, re-run resolve with the concept's encyclopedic name, e.g. \"English language\" instead of \"learning English\".\nThen run: uv run /tmp/wiki-eval-irlbslh7/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q130192 --editions pl,cs,uk,de,tr\nRun it now, without --proxy: the covered editions' results don't need the user's answer. Then tell the user that pl, cs, uk is not covered and offer the proxy.\nAdd --proxy 'pl:Język angielski' only in a later run, after the user agrees.",
+          "error": false
+        },
+        {
+          "cmd": "uv run /tmp/wiki-eval-irlbslh7/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q130192 --editions pl,cs,uk,de,tr",
+          "sub": "analyze",
+          "output": "Analysis 20260927-092702-76529c · data through 2026-09-26\nMeasured: views of the 'English as a second or foreign language' article (Q130192). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.\nGrowth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).\n\nde (German) · Englisch als Zweitsprache\n  DECLINING -26.8% [90% range -34.6% to -18.0%] · confidence MEDIUM · 75 views/month · declining\n  - consistent: 12 of 12 months below the same month last year\n  - tiny volume: 75 views/month\n\ntr (Turkish) · Yabancı dil olarak İngilizce eğitimi\n  DECLINING -30.6% [90% range -42.9% to -18.5%] · confidence MEDIUM · 66 views/month · declining\n  - consistent: 12 of 12 months below the same month last year\n  - tiny volume: 66 views/month\n  - caveat: all of tr Wikipedia changed -16.3% year over year; share-of-edition figures remove this effect\n\npl (Polish): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.\ncs (Czech): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.\nuk (Ukrainian): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.\nComparison de vs tr: 3.8 points apart [90% range -10.7 to +17.1] -> no clear difference\nCaveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.13%); figures here use the daily data\nCaveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too\n\nSaved: /tmp/wiki-eval-irlbslh7/wiki-interest-runs/20260927-092702-76529c (analysis.json, summary.txt, trend.png, growth.png)\nRe-run: uv run /tmp/wiki-eval-irlbslh7/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q130192 --editions pl,cs,uk,de,tr --months 24\nNext: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-irlbslh7/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-irlbslh7/wiki-interest-runs/20260927-092702-76529c",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "## Initial findings\n\nI found data for **German and Turkish**, which both show declining interest in English as a second/foreign language:\n\n- **German** (*Englisch als Zweitsprache*): **-26.8% decline** (medium confidence), 75 views/month  \n- **Turkish** (*Yabancı dil olarak İngilizce eğitimi*): **-30.6% decline** (medium confidence), 66 views/month\n\nBoth have been consistently below their year-ago numbers across all 12 months, though the volume is quite small.\n\n## Missing data\n\nPolish, Czech, and Ukrainian don't have dedicated articles on \"English as a second or foreign language,\" but they all have broader articles on the **English language itself** (Q1860). This would measure interest more broadly, not specifically learner-focused. \n\nWould you like me to **include the English language article as a proxy** for these three editions to show the full picture across all five? This would give us context on general interest in English across all markets, though it's a broader signal than language-learning specifically.",
+      "cost": 0.0461789,
+      "turns": 5,
+      "seconds": 31.9,
+      "error": ""
+    }
+  ]
+}

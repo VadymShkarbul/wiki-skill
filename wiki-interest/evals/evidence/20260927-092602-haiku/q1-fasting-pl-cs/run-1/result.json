@@ -1,0 +1,82 @@
+{
+  "case": "q1-fasting-pl-cs",
+  "run": 1,
+  "passed": true,
+  "cost": 0.0466,
+  "turns": 5,
+  "seconds": 34.5,
+  "graded": [
+    {
+      "turn": 1,
+      "checks": [
+        {
+          "check": "skill used",
+          "passed": true,
+          "evidence": "Skill tool: True; wiki.py commands: ['resolve', 'analyze']"
+        },
+        {
+          "check": "runs resolve -> analyze",
+          "passed": true,
+          "evidence": "ran: ['resolve', 'analyze']"
+        },
+        {
+          "check": "no command matches /--proxy/",
+          "passed": true,
+          "evidence": "none"
+        },
+        {
+          "check": "answer matches /47[.,]7|48 ?%/",
+          "passed": true,
+          "evidence": "47.7"
+        },
+        {
+          "check": "answer matches /not covered|no (dedicated |specific )?article|doesn.t have|does not have|no .{0,40}article/",
+          "passed": true,
+          "evidence": "no dedicated article"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    "artifacts/20260927-092628-98afa4/analysis.json",
+    "artifacts/20260927-092628-98afa4/summary.txt"
+  ],
+  "transcript": [
+    {
+      "prompt": "Compare the growth of interest in intermittent fasting in Polish and Czech Wikipedia over the last two years.",
+      "session_id": "b9358182-8f32-4936-892a-cea991b1604c",
+      "skill_invoked": true,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-9_n_hpwm/.claude/skills/wiki-interest/scripts/wiki.py resolve \"intermittent fasting\" --editions pl,cs",
+          "sub": "resolve",
+          "output": "Installed 13 packages in 26ms\nCandidates for 'intermittent fasting' · editions: pl (Polish), cs (Czech)\n1. Q1666254 intermittent fasting: a diet that cycles between a period of fasting and non-fasting · 31 Wikipedias\n   pl: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Post\" (broader concept: fasting, Q44602); \"Dieta\" (broader concept: diet, Q474191)\n   cs: Přerušovaný půst\n\nNext: pick the candidate that matches what the user means. If more than one fits, ask the user. If none fits, re-run resolve with the concept's encyclopedic name, e.g. \"English language\" instead of \"learning English\".\nThen run: uv run /tmp/wiki-eval-9_n_hpwm/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs\nRun it now, without --proxy: the covered editions' results don't need the user's answer. Then tell the user that pl is not covered and offer the proxy.\nAdd --proxy pl:Post only in a later run, after the user agrees.",
+          "error": false
+        },
+        {
+          "cmd": "uv run /tmp/wiki-eval-9_n_hpwm/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs --months 24",
+          "sub": "analyze",
+          "output": "Analysis 20260927-092628-98afa4 · data through 2026-09-26\nMeasured: views of the 'intermittent fasting' article (Q1666254). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.\nGrowth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).\n\ncs (Czech) · Přerušovaný půst\n  DECLINING -47.7% [90% range -62.5% to -27.9%] · confidence MEDIUM · 146 views/month\n  - consistent: 11 of 12 months below the same month last year\n  - spike-driven: without 10 spike days growth is -34.4%\n  - spike days (causes unknown, do not guess): 2025-04-14 (508 views), 2025-08-15 (164 views), 2024-10-17 (110 views)\n\npl (Polish): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.\nCaveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.29%); figures here use the daily data\nCaveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too\n\nSaved: /tmp/wiki-eval-9_n_hpwm/wiki-interest-runs/20260927-092628-98afa4 (analysis.json, summary.txt, trend.png, growth.png)\nRe-run: uv run /tmp/wiki-eval-9_n_hpwm/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs --months 24\nNext: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-9_n_hpwm/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-9_n_hpwm/wiki-interest-runs/20260927-092628-98afa4",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "Here's what the data shows:\n\n## Czech Wikipedia: Declining interest\n\n**Verdict:** Intermittent fasting interest is **declining significantly** in Czech Wikipedia.\n- **Change:** -47.7% (90% range: -62.5% to -27.9%)\n- **Confidence:** MEDIUM\n- **Traffic:** 146 views/month\n- **Pattern:** Consistent decline in 11 of 12 months compared to a year earlier\n- **Caveat:** Some spikes on unknown dates (April 2025, August 2025, October 2024) add noise; without them, the decline would be -34.4%\n\n## Polish Wikipedia: Not directly comparable\n\nPolish Wikipedia has **no dedicated article on intermittent fasting**, so we can't measure interest the same way. However, I can offer to measure broader concepts as proxies:\n\n1. **\"Post\" (Fasting in general, Q44602)** — would show interest in fasting as a broader category\n2. **\"Dieta\" (Diet in general, Q474191)** — would show interest in diet as a broad topic\n\nWould you like me to analyze either of these for Polish Wikipedia so we can see how fasting or diet interest compares to the Czech intermittent fasting trend? Or would you prefer just the Czech results?",
+      "cost": 0.04657119999999999,
+      "turns": 5,
+      "seconds": 34.5,
+      "error": ""
+    }
+  ]
+}

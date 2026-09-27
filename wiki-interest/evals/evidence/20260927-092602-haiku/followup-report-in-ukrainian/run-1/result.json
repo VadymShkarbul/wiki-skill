@@ -1,0 +1,119 @@
+{
+  "case": "followup-report-in-ukrainian",
+  "run": 1,
+  "passed": true,
+  "cost": 0.0646,
+  "turns": 8,
+  "seconds": 36.7,
+  "graded": [
+    {
+      "turn": 1,
+      "checks": [
+        {
+          "check": "skill used",
+          "passed": true,
+          "evidence": "Skill tool: True; wiki.py commands: ['resolve', 'analyze']"
+        },
+        {
+          "check": "runs resolve -> analyze",
+          "passed": true,
+          "evidence": "ran: ['resolve', 'analyze']"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "checks": [
+        {
+          "check": "runs report",
+          "passed": true,
+          "evidence": "ran: ['report']"
+        },
+        {
+          "check": "a command matches /report.*--lang[ =]uk/",
+          "passed": true,
+          "evidence": "uv run /tmp/wiki-eval-u7a6f7sz/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-u7a6f7sz/wiki-interest-runs/20260927-092824-1fa099 --lang uk"
+        },
+        {
+          "check": "PDF report produced",
+          "passed": true,
+          "evidence": "Report saved: /tmp/wiki-eval-u7a6f7sz/wiki-interest-runs/20260927-092824-1fa099/report.pdf (1 page, labels i"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": true,
+          "evidence": "all grounded"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    "artifacts/20260927-092824-1fa099/analysis.json",
+    "artifacts/20260927-092824-1fa099/summary.txt",
+    "artifacts/20260927-092824-1fa099/narrative.md",
+    "artifacts/20260927-092824-1fa099/report.pdf"
+  ],
+  "transcript": [
+    {
+      "prompt": "Is interest in astronomy growing in Ukrainian Wikipedia, and how much can we trust it?",
+      "session_id": "760d1bc2-e954-4d3e-8ec7-0152c6088410",
+      "skill_invoked": true,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-u7a6f7sz/.claude/skills/wiki-interest/scripts/wiki.py resolve \"astronomy\" --editions uk",
+          "sub": "resolve",
+          "output": "Installed 13 packages in 25ms\nCandidates for 'astronomy' · editions: uk (Ukrainian)\n1. Q333 astronomy: natural science studying celestial objects and phenomena in the cosmos · 252 Wikipedias\n   uk: Астрономія\n2. Q3232273 Astronomy: American magazine · 9 Wikipedias\n   uk: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Журнал\" (broader concept: magazine, Q41298)\n3. Q12012641 astronomy: fictional class at Hogwarts · 2 Wikipedias\n   uk: NOT COVERED (no article on this concept)\n       no proxy found in this edition\n\nAMBIGUOUS: 'astronomy' names 3 different concepts (Q333 natural science studying celestial objects and phenomena in the cosmos; Q3232273 American magazine; Q12012641 fictional class at Hogwarts). Unless the user's message makes the meaning clear, ask which one they mean before running analyze.\n\nNext: pick the candidate that matches what the user means. If more than one fits, ask the user. If none fits, re-run resolve with the concept's encyclopedic name, e.g. \"English language\" instead of \"learning English\".\nThen run: uv run /tmp/wiki-eval-u7a6f7sz/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions uk",
+          "error": false
+        },
+        {
+          "cmd": "uv run /tmp/wiki-eval-u7a6f7sz/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions uk",
+          "sub": "analyze",
+          "output": "Analysis 20260927-092824-1fa099 · data through 2026-09-26\nMeasured: views of the 'astronomy' article (Q333). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.\nGrowth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).\n\nuk (Ukrainian) · Астрономія\n  DECLINING -45.5% [90% range -52.1% to -33.7%] · confidence HIGH · 437 views/month\n  - consistent: 10 of 12 months below the same month last year\n  - seasonal: peaks in September (+176.5% vs average)\n  - caveat: all of uk Wikipedia changed -24.6% year over year; share-of-edition figures remove this effect\n\nCaveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.13%); figures here use the daily data\nCaveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too\n\nSaved: /tmp/wiki-eval-u7a6f7sz/wiki-interest-runs/20260927-092824-1fa099 (analysis.json, summary.txt, trend.png, growth.png)\nRe-run: uv run /tmp/wiki-eval-u7a6f7sz/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions uk --months 24\nNext: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-u7a6f7sz/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-u7a6f7sz/wiki-interest-runs/20260927-092824-1fa099",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "**No, interest in astronomy is declining in Ukrainian Wikipedia—and we can trust this result.**\n\nThe astronomy article's pageviews fell **45.5%** over the last 12 months (90% confidence range: -52.1% to -33.7%), with 10 of 12 months tracking below their year-ago levels. **Confidence is high** because the decline is consistent and large.\n\nThis figure already accounts for the overall 24.6% drop across all of Ukrainian Wikipedia, so it reflects a genuine loss of relative attention to astronomy, not just a platform-wide trend.\n\nThere is a seasonal spike in September (+176.5% above average), but that's normal for the topic and doesn't change the underlying decline. The article averages 437 views/month.\n\n**What this means:** Pageviews measure attention on Wikipedia, not demand or willingness to pay. Before drawing conclusions, you'd want to validate whether this reflects real-world interest changes, declining Ukrainian Wikipedia traffic overall, or shifts in how people find astronomy information (e.g., through YouTube, dedicated sites, or social media instead).",
+      "cost": 0.0427775,
+      "turns": 5,
+      "seconds": 21.9,
+      "error": ""
+    },
+    {
+      "prompt": "Make that a one-page PDF report in Ukrainian.",
+      "session_id": "760d1bc2-e954-4d3e-8ec7-0152c6088410",
+      "skill_invoked": false,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-u7a6f7sz/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-u7a6f7sz/wiki-interest-runs/20260927-092824-1fa099 --lang uk",
+          "sub": "report",
+          "output": "Report saved: /tmp/wiki-eval-u7a6f7sz/wiki-interest-runs/20260927-092824-1fa099/report.pdf (1 page, labels in uk)\nChecks passed: every number in narrative.md was shown by analyze; the text fits one page.\nNext: give the user the PDF path. To change the wording, edit /tmp/wiki-eval-u7a6f7sz/wiki-interest-runs/20260927-092824-1fa099/narrative.md and re-run: uv run /tmp/wiki-eval-u7a6f7sz/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-u7a6f7sz/wiki-interest-runs/20260927-092824-1fa099 --lang uk",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "Done. Your Ukrainian-language report is ready:\n\n**`/tmp/wiki-eval-u7a6f7sz/wiki-interest-runs/20260927-092824-1fa099/report.pdf`**\n\nIt's a one-page PDF with the decline trend visualized, the confidence breakdown, and next steps—all in Ukrainian.",
+      "cost": 0.021783499999999997,
+      "turns": 3,
+      "seconds": 14.8,
+      "error": ""
+    }
+  ]
+}

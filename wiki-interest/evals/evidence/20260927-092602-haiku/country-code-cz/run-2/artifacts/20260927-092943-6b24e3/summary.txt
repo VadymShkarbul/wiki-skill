@@ -1,0 +1,21 @@
+Analysis 20260927-092943-6b24e3 · data through 2026-09-26
+Measured: views of the 'astronomy' article (Q333). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.
+Growth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).
+
+pl (Polish) · Astronomia
+  NO CLEAR CHANGE -9.6% [90% range -23.8% to +8.8%] · 1,198 views/month · large & flat
+  - the 90% range -23.8% to +8.8% includes zero
+  - seasonal: peaks in September (+47.8% vs average)
+
+cs (Czech) · Astronomie
+  DECLINING -22.9% [90% range -31.6% to -11.2%] · confidence HIGH · 538 views/month · declining
+  - consistent: 10 of 12 months below the same month last year
+  - seasonal: peaks in September (+22.8% vs average)
+
+Comparison pl vs cs: 13.2 points apart [90% range -3.8 to +33.8] -> no clear difference
+Caveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.29%); figures here use the daily data
+Caveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too
+
+Saved: /tmp/wiki-eval-zpz2nvfp/wiki-interest-runs/20260927-092943-6b24e3 (analysis.json, summary.txt, trend.png, growth.png)
+Re-run: uv run /tmp/wiki-eval-zpz2nvfp/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions cs,pl --months 24
+Next: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-zpz2nvfp/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-zpz2nvfp/wiki-interest-runs/20260927-092943-6b24e3

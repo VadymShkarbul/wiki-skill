@@ -20,6 +20,7 @@
   "small & flat": "small & flat",
   "meta": "{editions} · last {n} months vs the same months a year earlier · data through {date}",
   "bottom_line": "Bottom line",
+  "measured": "Measured: views of the Wikipedia article on {concepts} in each edition. It stands in for the question above only as far as that article covers it.",
   "verdicts": "Verdicts by edition",
   "col_edition": "Edition",
   "col_article": "Article",

@@ -1,0 +1,25 @@
+Analysis 20260927-092702-76529c · data through 2026-09-26
+Measured: views of the 'English as a second or foreign language' article (Q130192). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.
+Growth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).
+
+de (German) · Englisch als Zweitsprache
+  DECLINING -26.8% [90% range -34.6% to -18.0%] · confidence MEDIUM · 75 views/month · declining
+  - consistent: 12 of 12 months below the same month last year
+  - tiny volume: 75 views/month
+
+tr (Turkish) · Yabancı dil olarak İngilizce eğitimi
+  DECLINING -30.6% [90% range -42.9% to -18.5%] · confidence MEDIUM · 66 views/month · declining
+  - consistent: 12 of 12 months below the same month last year
+  - tiny volume: 66 views/month
+  - caveat: all of tr Wikipedia changed -16.3% year over year; share-of-edition figures remove this effect
+
+pl (Polish): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.
+cs (Czech): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.
+uk (Ukrainian): NOT COVERED (no article on these concepts). Tell the user and ask whether to use a proxy; stop there. A request to compare this edition is not agreement to a proxy: add --proxy only after the user says yes in a new message.
+Comparison de vs tr: 3.8 points apart [90% range -10.7 to +17.1] -> no clear difference
+Caveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.13%); figures here use the daily data
+Caveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too
+
+Saved: /tmp/wiki-eval-irlbslh7/wiki-interest-runs/20260927-092702-76529c (analysis.json, summary.txt, trend.png, growth.png)
+Re-run: uv run /tmp/wiki-eval-irlbslh7/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q130192 --editions pl,cs,uk,de,tr --months 24
+Next: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-irlbslh7/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-irlbslh7/wiki-interest-runs/20260927-092702-76529c

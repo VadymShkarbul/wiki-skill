@@ -62,6 +62,14 @@ class Catalog:
         self.by_dbname = {e.dbname: e for e in editions}
         self._by_name = {e.name.casefold(): e for e in editions}
 
+    def is_edition(self, token: str) -> bool:
+        """True if every comma-separated part of ``token`` names an edition."""
+        parts = [p for p in token.replace(";", ",").split(",") if p.strip()]
+        try:
+            return bool(parts) and all(self._lookup(p.strip()) for p in parts)
+        except SkillError:
+            return False
+
     def parse(self, text: str) -> list[Edition]:
         """Parse ``pl,cs`` (codes, dbnames like ``plwiki``, or English names like ``Polish``)."""
         tokens = [t.strip() for t in text.replace(";", ",").split(",") if t.strip()]

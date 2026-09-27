@@ -1,0 +1,36 @@
+Analysis 20260927-093702-8ae740 · data through 2026-09-26
+Measured: views of the 'English' article (Q1860). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.
+Growth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).
+
+tr (Turkish) · İngilizce
+  NO CLEAR CHANGE +0.6% [90% range -9.0% to +11.1%] · 7,046 views/month · large & flat
+  - the 90% range -9.0% to +11.1% includes zero
+  - caveat: all of tr Wikipedia changed -16.3% year over year; share-of-edition figures remove this effect
+
+de (German) · Englische Sprache
+  NO CLEAR CHANGE -0.8% [90% range -3.5% to +2.0%] · 23,694 views/month · large & flat
+  - the 90% range -3.5% to +2.0% includes zero
+
+pl (Polish) · Język angielski
+  DECLINING -9.8% [90% range -14.9% to -5.0%] · confidence HIGH · 7,913 views/month · declining
+  - consistent: 9 of 12 months below the same month last year
+
+cs (Czech) · Angličtina
+  DECLINING -10.9% [90% range -15.1% to -6.7%] · confidence HIGH · 2,947 views/month · declining
+  - consistent: 10 of 12 months below the same month last year
+
+uk (Ukrainian) · Англійська мова
+  DECLINING -13.9% [90% range -17.5% to -10.5%] · confidence HIGH · 6,767 views/month · declining
+  - consistent: 12 of 12 months below the same month last year
+  - caveat: all of uk Wikipedia changed -24.6% year over year; share-of-edition figures remove this effect
+
+Comparison tr vs de: 1.4 points apart [90% range -9.9 to +12.7 points] -> no clear difference
+Comparison tr vs pl: 10.4 points apart [90% range +0.4 to +20.7 points] -> clear difference
+Comparison tr vs cs: 11.5 points apart [90% range +4.0 to +20.2 points] -> clear difference
+Comparison tr vs uk: 14.5 points apart [90% range +5.3 to +24.6 points] -> clear difference
+Caveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.29%); figures here use the daily data
+Caveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too
+
+Saved: /tmp/wiki-eval-wy1_fp5b/wiki-interest-runs/20260927-093702-8ae740 (analysis.json, summary.txt, trend.png, growth.png)
+Re-run: uv run /tmp/wiki-eval-wy1_fp5b/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q1860 --editions pl,cs,uk,de,tr --months 24
+Next: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-wy1_fp5b/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-wy1_fp5b/wiki-interest-runs/20260927-093702-8ae740

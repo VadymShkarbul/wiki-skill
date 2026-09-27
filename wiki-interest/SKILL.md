@@ -96,10 +96,15 @@ uv run SKILL_DIR/scripts/wiki.py analyze --concepts Q1666254 --editions pl,cs
    - <what to research next, and why: up to 4 bullets>
    ```
 
-   Keep the three headings in English. The code adds the table, charts, and limitations.
+   Keep the three headings in English. Keep each bullet under 220 characters (about 30
+   words) and the bottom line under 480. If the concept stands in for what the user asked
+   about (the English language article for "learning English"), say so in the bottom line.
+   Create the file with your file-writing tool, not with shell commands. The code adds the
+   table, charts, and limitations.
 2. Run `uv run SKILL_DIR/scripts/wiki.py report --run <run folder> --lang uk` (`--lang` is
    `en` or `uk` and sets the report's labels).
-3. If it rejects a number, you used one that `analyze` didn't show. Fix the text and re-run.
+3. If it rejects the text, edit `narrative.md` as the error says and re-run; don't ask the
+   user for permission to shorten it. A rejected number is one `analyze` didn't show.
    Numbers the user gave you, such as "we want 15% growth", go in `--user-numbers 15`.
 4. Give the user the PDF path.
 
@@ -126,18 +131,21 @@ Copy the `Re-run:` line and change one option: add an edition, change `--months`
 
 ## Example
 
-User: "Is interest in astronomy growing in Ukrainian Wikipedia, and can we trust it?"
+This topic is deliberately not one of the eval cases, so the example can't stand in for a
+real run. Always start a new topic with `resolve`, even if you think you know its Wikidata ID:
+IDs are easy to misremember.
 
-1. `resolve "astronomy" --editions uk` lists Q333 "astronomy" first (uk: Астрономія), then
-   two journals. Q333 is clearly meant.
-2. `analyze --concepts Q333 --editions uk` prints: `DECLINING -45.5% [90% range -52.1% to
-   -33.7%] · confidence HIGH · 437 views/month`, `consistent: 10 of 12 months below the same
-   month last year`, `seasonal: peaks in September`, and caveats.
-3. Answer: "No. Attention to astronomy in Ukrainian Wikipedia fell 45.5% over the last 12
-   months (90% range -52.1% to -33.7%). The decline is consistent, 10 of 12 months, so
-   confidence is high. Interest peaks every September, likely the school year. Pageviews show
-   attention, not demand, so treat this as a reason to check other signals before building
-   the course."
+User: "Is interest in chess growing in Spanish Wikipedia?"
+
+1. `resolve "chess" --editions es` lists Q718 "chess: strategy board game" (es: Ajedrez), then
+   the ABBA musical "Chess". The board game is clearly meant.
+2. `analyze --concepts Q718 --editions es` prints: `DECLINING -20.9% [90% range -31.3% to
+   -11.8%] · confidence HIGH · 20,664 views/month`, `consistent: 12 of 12 months below the
+   same month last year`, and a caveat that all of Spanish Wikipedia changed by -20.9%.
+3. Answer: "No. Chess's share of attention in Spanish Wikipedia fell 20.9% over the last 12
+   months (90% range -31.3% to -11.8%), in all 12 months, so confidence is high. That already
+   removes the drop in Spanish Wikipedia's total traffic. Pageviews show attention, not
+   demand, so check other signals before building on this."
 
 ## More detail
 

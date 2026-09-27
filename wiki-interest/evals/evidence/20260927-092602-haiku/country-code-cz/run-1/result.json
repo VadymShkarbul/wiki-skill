@@ -1,0 +1,67 @@
+{
+  "case": "country-code-cz",
+  "run": 1,
+  "passed": false,
+  "cost": 0.0447,
+  "turns": 5,
+  "seconds": 24.6,
+  "graded": [
+    {
+      "turn": 1,
+      "checks": [
+        {
+          "check": "skill used",
+          "passed": true,
+          "evidence": "Skill tool: True; wiki.py commands: ['resolve', 'analyze']"
+        },
+        {
+          "check": "a command matches /analyze.*--editions[ =](cs,pl|pl,cs)/",
+          "passed": true,
+          "evidence": "uv run /tmp/wiki-eval-merc_wv5/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions cs,pl"
+        },
+        {
+          "check": "answer numbers were printed by the tools",
+          "passed": false,
+          "evidence": "'-3.8' in “…tically clear (90% range -3.8% to +33.8%).\n\n**Cave…”; '+33.8' in “…lear (90% range -3.8% to +33.8%).\n\n**Caveats:** Bo…”"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    "artifacts/20260927-092936-6b24e3/analysis.json",
+    "artifacts/20260927-092936-6b24e3/summary.txt"
+  ],
+  "transcript": [
+    {
+      "prompt": "How is interest in astronomy changing in the cz and pl Wikipedias?",
+      "session_id": "a725c832-7e45-4237-bd78-538ab8d1ed1f",
+      "skill_invoked": true,
+      "commands": [
+        {
+          "cmd": "uv run /tmp/wiki-eval-merc_wv5/.claude/skills/wiki-interest/scripts/wiki.py resolve \"astronomy\" --editions cs,pl",
+          "sub": "resolve",
+          "output": "Installed 13 packages in 29ms\nCandidates for 'astronomy' · editions: cs (Czech), pl (Polish)\n1. Q333 astronomy: natural science studying celestial objects and phenomena in the cosmos · 252 Wikipedias\n   cs: Astronomie\n   pl: Astronomia\n2. Q3232273 Astronomy: American magazine · 9 Wikipedias\n   cs: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Časopis\" (broader concept: magazine, Q41298)\n   pl: NOT COVERED (no article on this concept)\n       possible proxies, only if the user agrees: \"Czasopismo\" (broader concept: magazine, Q41298)\n3. Q12012641 astronomy: fictional class at Hogwarts · 2 Wikipedias\n   cs: NOT COVERED (no article on this concept)\n       no proxy found in this edition\n   pl: NOT COVERED (no article on this concept)\n       no proxy found in this edition\n\nAMBIGUOUS: 'astronomy' names 3 different concepts (Q333 natural science studying celestial objects and phenomena in the cosmos; Q3232273 American magazine; Q12012641 fictional class at Hogwarts). Unless the user's message makes the meaning clear, ask which one they mean before running analyze.\n\nNext: pick the candidate that matches what the user means. If more than one fits, ask the user. If none fits, re-run resolve with the concept's encyclopedic name, e.g. \"English language\" instead of \"learning English\".\nThen run: uv run /tmp/wiki-eval-merc_wv5/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions cs,pl",
+          "error": false
+        },
+        {
+          "cmd": "uv run /tmp/wiki-eval-merc_wv5/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions cs,pl",
+          "sub": "analyze",
+          "output": "Analysis 20260927-092936-6b24e3 · data through 2026-09-26\nMeasured: views of the 'astronomy' article (Q333). If the user asked about something narrower or different (e.g. learning English, not the English language), say that this is a stand-in, in your answer and in the report's bottom line.\nGrowth = 2025-09..2026-08 vs the same months a year earlier, as a share of each edition's human pageviews. Trend window 2024-09..2026-08 (24 months).\n\npl (Polish) · Astronomia\n  NO CLEAR CHANGE -9.6% [90% range -23.8% to +8.8%] · 1,198 views/month · large & flat\n  - the 90% range -23.8% to +8.8% includes zero\n  - seasonal: peaks in September (+47.8% vs average)\n\ncs (Czech) · Astronomie\n  DECLINING -22.9% [90% range -31.6% to -11.2%] · confidence HIGH · 538 views/month · declining\n  - consistent: 10 of 12 months below the same month last year\n  - seasonal: peaks in September (+22.8% vs average)\n\nComparison pl vs cs: 13.2 points apart [90% range -3.8 to +33.8] -> no clear difference\nCaveat (all editions): Wikimedia's daily and monthly edition totals differ slightly in 2025-03, 2026-04 (at most 0.29%); figures here use the daily data\nCaveat (all editions): Wikimedia changed bot detection in 2025 and reclassified Mar-Aug 2025 traffic; share-of-edition figures absorb part of this, since totals were reclassified too\n\nSaved: /tmp/wiki-eval-merc_wv5/wiki-interest-runs/20260927-092936-6b24e3 (analysis.json, summary.txt, trend.png, growth.png)\nRe-run: uv run /tmp/wiki-eval-merc_wv5/.claude/skills/wiki-interest/scripts/wiki.py analyze --concepts Q333 --editions cs,pl --months 24\nNext: tell the user these verdicts with their confidence, reasons and caveats. Use only numbers shown here. For a shareable one-page PDF, write narrative.md in the run folder, then run: uv run /tmp/wiki-eval-merc_wv5/.claude/skills/wiki-interest/scripts/wiki.py report --run /tmp/wiki-eval-merc_wv5/wiki-interest-runs/20260927-092936-6b24e3",
+          "error": false
+        }
+      ],
+      "violations": [],
+      "other_tools": [],
+      "answer": "## Results: astronomy interest in Czech vs Polish Wikipedias\n\n**Polish Wikipedia (Astronomia):** No clear trend. Views fell 9.6% over the last 12 months, but the 90% range (-23.8% to +8.8%) includes zero, so this could be random variation. Average 1,198 views/month, with a strong seasonal peak in September.\n\n**Czech Wikipedia (Astronomie):** Declining. Views fell 22.9% (90% range -31.6% to -11.2%), and confidence is high because 10 of 12 months underperformed the same months last year. Average 538 views/month. Also peaks in September but less dramatically than Polish.\n\n**Comparison:** The two editions diverge by 13.2 percentage points, but that difference isn't statistically clear (90% range -3.8% to +33.8%).\n\n**Caveats:** Both articles show strong seasonal peaks in September. Wikimedia changed bot detection in 2025 and reclassified traffic for Mar–Aug 2025, which affects the precision of these figures.\n\nThe Czech article shows a real downward trend; Polish shows stability. Both are worth validating against other signals before drawing conclusions about audience interest.",
+      "cost": 0.0446873,
+      "turns": 5,
+      "seconds": 24.6,
+      "error": ""
+    }
+  ]
+}

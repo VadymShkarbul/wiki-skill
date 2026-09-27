@@ -30,6 +30,9 @@ GAP = 4
 CHART_W = (CONTENT - GAP) / 2
 CHART_H = CHART_W * SIZE[1] / SIZE[0]
 FOOTER_H = 9
+MIN_CHART_H = 45  # below this the charts stop being readable
+HEADING_H = 9  # ln(2) + heading line + rule gap
+NOTE_LINE = 3.4
 MAX_ROWS = 8
 MAX_TITLES = 2  # article titles listed per edition; a basket may have more
 INK, INK_2, MUTED, RULE = (11, 11, 11), (82, 81, 78), (137, 135, 129), (225, 224, 217)
@@ -151,15 +154,37 @@ def _comparisons(pdf: _Page, data: dict[str, Any], w: dict[str, Any]) -> None:
         pdf.text_block(" · ".join(lines), 7.5, color=INK_2, height=3.8)
 
 
-def _charts(pdf: _Page, data: dict[str, Any], w: dict[str, Any]) -> None:
+def _space_after_charts(pdf: _Page, bullets: list[str]) -> float:
+    """Height the rest of the page needs: the bullets, one limitation line plus the
+    'more notes' line, and the footer."""
+    pdf.set_font(FONT, "", 9)
+    text = sum(
+        pdf.multi_cell(CONTENT, 4.6, f"\u2022 {b}", align="L", dry_run=True, output="HEIGHT")
+        for b in bullets
+    )
+    return 2 * HEADING_H + text + 2 * NOTE_LINE + FOOTER_H + 1
+
+
+def _charts(pdf: _Page, data: dict[str, Any], w: dict[str, Any], bullets: list[str]) -> None:
+    """Both charts side by side, shrunk if needed so the whole page fits (review fix: an
+    in-budget narrative with 8 editions used to overflow)."""
     pdf.ln(2)
     top = pdf.get_y()
+    room = PAGE_H - MARGIN - top - _space_after_charts(pdf, bullets)
+    height = min(CHART_H, room)
+    if height < MIN_CHART_H:
+        raise SkillError(
+            "The report does not fit on one page with this many editions and this much text.",
+            "Shorten the bottom line and bullets in narrative.md, or re-run analyze with fewer "
+            "editions (at most 8 fit), then re-run the report command.",
+        )
+    width = height * SIZE[0] / SIZE[1]
     for i, draw in enumerate((draw_trend, draw_growth)):
         buffer = io.BytesIO()
         draw(data, buffer, w)
         buffer.seek(0)
-        pdf.image(buffer, x=MARGIN + i * (CHART_W + GAP), y=top, w=CHART_W, h=CHART_H)
-    pdf.set_y(top + CHART_H + 1)
+        pdf.image(buffer, x=MARGIN + i * (width + GAP), y=top, w=width, h=height)
+    pdf.set_y(top + height + 1)
 
 
 def _notes(data: dict[str, Any], w: dict[str, Any]) -> list[str]:
@@ -233,10 +258,13 @@ def render(run_dir: Path, lang: str, user_numbers: list[float] | None = None) ->
     )
     pdf.heading(w["bottom_line"])
     pdf.text_block(story.bottom_line, 9.5, height=5)
+    concepts = ", ".join(f"\u201c{c['label']}\u201d ({c['qid']})" for c in data["concepts"])
+    pdf.ln(1)
+    pdf.text_block(w["measured"].format(concepts=concepts), 7.5, color=INK_2, height=3.8)
     pdf.heading(w["verdicts"])
     _table(pdf, data, w)
     _comparisons(pdf, data, w)
-    _charts(pdf, data, w)
+    _charts(pdf, data, w, story.bullets)
     if pdf.page_no() > 1:
         raise SkillError(
             "The analysis has too many editions or concepts to fit its table and charts on one "

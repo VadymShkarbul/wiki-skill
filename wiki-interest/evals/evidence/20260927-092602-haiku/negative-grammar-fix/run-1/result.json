@@ -1,0 +1,41 @@
+{
+  "case": "negative-grammar-fix",
+  "run": 1,
+  "passed": true,
+  "cost": 0.0201,
+  "turns": 1,
+  "seconds": 5.4,
+  "graded": [
+    {
+      "turn": 1,
+      "checks": [
+        {
+          "check": "skill not used",
+          "passed": true,
+          "evidence": "Skill tool: False; wiki.py commands: []"
+        },
+        {
+          "check": "no ad-hoc code",
+          "passed": true,
+          "evidence": "none"
+        }
+      ]
+    }
+  ],
+  "artifacts": [],
+  "transcript": [
+    {
+      "prompt": "Fix the grammar in this sentence from my Wikipedia article draft: 'Astronomy are a natural science that study celestial objects and phenomenon.'",
+      "session_id": "504725f3-780a-4c60-81a5-0ecb2ff13257",
+      "skill_invoked": false,
+      "commands": [],
+      "violations": [],
+      "other_tools": [],
+      "answer": "Here's the corrected sentence:\n\n\"Astronomy is a natural science that studies celestial objects and phenomena.\"\n\nThree fixes:\n1. **\"are\" → \"is\"** — \"Astronomy\" is singular, so it needs the singular verb\n2. **\"study\" → \"studies\"** — matches the singular subject\n3. **\"phenomenon\" → \"phenomena\"** — the plural form to match \"objects\"",
+      "cost": 0.020100399999999997,
+      "turns": 1,
+      "seconds": 5.4,
+      "error": ""
+    }
+  ]
+}
