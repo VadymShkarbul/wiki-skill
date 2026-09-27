@@ -40,6 +40,31 @@ makes a comparison across editions valid.
 - **Why:** a missing article does not mean zero interest, so counting it as zero is false.
   Silent substitution changes the question ("therapeutic fasting" is not intermittent fasting).
 
+### D1a. Revision: candidates sorted by Wikipedia coverage *(2026-09-27, from live runs)*
+- **Context:** Wikidata search ranks by text relevance. For "Mercury" it put the Ford car brand
+  first; the planet came 3rd and the chemical element wasn't in the top 4.
+- **Choice:** from the search hits (up to 4× the limit), keep topic items. Rank exact label or alias
+  matches first, then by the number of Wikipedias that cover them, a notability prior.
+  Result for "Mercury": planet (250), element (176), Roman god (84).
+- **Review fix:** sorting by coverage alone buried exact matches under popular prefix matches.
+  Wikidata search is by label prefix, so "Go" showed Google and Gothenburg and dropped the Go
+  programming language. Exact matches now come first.
+- **Why:** the most widely known meanings come first, and the model still sees each of them and asks
+  the user when more than one fits (D1).
+
+### D3a. Revision: proxies only from broader concepts; text search dropped *(2026-09-27, from live runs)*
+- **Context:** the first implementation fell back to full-text search inside the edition. Searching
+  trwiki for "Learning English" returned unrelated articles, including an assassination article and
+  a sexual-content article. Broader concepts gave sensible proxies (plwiki "Post" and "Dieta" for
+  intermittent fasting).
+- **Choice:** proxies are the edition's articles on the concept's broader concepts (Wikidata P279
+  "subclass of", then P31 "instance of"), each labeled with its source concept. When there are none,
+  the output says "no proxy found in this edition".
+- **Why:** it's a principled, explainable relation, not a word match. An irrelevant or offensive
+  proxy suggestion would undermine trust in the whole report.
+- **Also added:** when no candidate fits, the `Next:` line tells the model to re-run with the
+  concept's encyclopedic name (e.g. "English language" for "learning English"; see D5).
+
 ### D4. Title housekeeping: resolve and flag
 - **Choice (v1):**
   - Always resolve input titles through normalization and redirects (batched).

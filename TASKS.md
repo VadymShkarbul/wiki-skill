@@ -13,7 +13,7 @@
   - [x] Testing on a cheap model (E0–E4)
 - [ ] Implement the skill
   - [x] 1. Foundation: entry script + lock, HTTP client (UA, spacing, retries), cache, CLI skeleton
-  - [ ] 2. `resolve`: Wikidata candidates, coverage, proxies, title hygiene
+  - [x] 2. `resolve`: Wikidata candidates, coverage, proxies (creation date/rename checks move to step 3: they need the window)
   - [ ] 3. `analyze`: fetch, share, YoY, trust verdict, charts, summary + analysis.json
   - [ ] 4. `report`: one-page PDF, narrative checks, en/uk labels
   - [ ] 5. SKILL.md + references; offline tests with recorded responses

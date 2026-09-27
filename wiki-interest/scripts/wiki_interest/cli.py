@@ -4,20 +4,35 @@ Every failure ends with ``Error:`` and ``Next:`` lines, never a traceback (decis
 """
 
 import argparse
+import shlex
 import sys
 import traceback
 from collections.abc import Sequence
+from pathlib import Path
 from typing import NoReturn
 
 from wiki_interest import __version__
-from wiki_interest.cache import default_cache_dir
+from wiki_interest.cache import Cache, default_cache_dir
+from wiki_interest.editions import load_catalog
 from wiki_interest.errors import SkillError
+from wiki_interest.http_client import HttpClient
+from wiki_interest.resolve import MAX_CANDIDATES, find_candidates, format_candidates
 
 EXIT_OK = 0
 EXIT_INTERNAL = 1
 EXIT_USAGE = 2
 EXIT_INTERRUPTED = 130
 PROG = "wiki.py"
+SCRIPT = Path(__file__).resolve().parents[1] / "wiki.py"
+
+
+def command_prefix() -> str:
+    """The exact command the agent should copy into Next lines: absolute path, no cd."""
+    return f"uv run {shlex.quote(str(SCRIPT))}"
+
+
+def make_client() -> HttpClient:
+    return HttpClient(Cache(default_cache_dir()))
 
 
 def _print_error(message: str, next_step: str) -> None:
@@ -39,13 +54,42 @@ def _not_implemented(args: argparse.Namespace) -> int:
     )
 
 
+def _resolve(args: argparse.Namespace) -> int:
+    client = make_client()
+    catalog = load_catalog(client)
+    editions = catalog.parse(args.editions)
+    concepts = find_candidates(
+        client, catalog, args.topic, editions, search_lang=args.search_lang, limit=args.limit
+    )
+    print(format_candidates(args.topic, editions, concepts, command_prefix()))
+    return EXIT_OK
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = _Parser(prog=PROG, description="Wikipedia pageview interest analysis.")
     parser.add_argument("--version", action="version", version=f"wiki-interest {__version__}")
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_Parser)
 
-    resolve = sub.add_parser("resolve", help="Find Wikidata concepts for a topic.")
-    resolve.set_defaults(handler=_not_implemented)
+    resolve = sub.add_parser(
+        "resolve",
+        help="Find Wikidata concepts for a topic and their article in each edition.",
+    )
+    resolve.add_argument(
+        "topic", help="Topic in words, a QID (Q333), lang:Title (pl:Astronomia), or an article URL."
+    )
+    resolve.add_argument("--editions", required=True, help="Edition codes, e.g. pl,cs.")
+    resolve.add_argument(
+        "--search-lang", default="en", help="Language the topic is written in (default: en)."
+    )
+    resolve.add_argument(
+        "--limit",
+        type=int,
+        default=3,
+        choices=range(1, MAX_CANDIDATES + 1),
+        metavar=f"1-{MAX_CANDIDATES}",
+        help="How many candidates to show (default: 3).",
+    )
+    resolve.set_defaults(handler=_resolve)
 
     analyze = sub.add_parser("analyze", help="Fetch pageviews and compute verdicts and charts.")
     analyze.set_defaults(handler=_not_implemented)
@@ -66,6 +110,9 @@ def _write_crash_log() -> str:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     args = build_parser().parse_args(argv)
     try:
         return args.handler(args)
