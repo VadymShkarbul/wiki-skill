@@ -53,6 +53,11 @@ Parameter values: `access` = all-access / desktop / mobile-web / mobile-app;
     human views year over year ([WMF, 2025-10-17](https://wikimediafoundation.org/news/2025/10/17/new-user-trends-on-wikipedia/)).
     Trends that cross 2020-04 or 2025 carry a methodology-change caveat.
 
+12. **Edition totals: daily sums and monthly totals differ slightly in reprocessed months.**
+    Checked 2026-09-27 for 2023-09..2026-08: cs, uk, pl, and en all differ in exactly 2025-03
+    (-0.11% to -0.13%, the start of the bot reclassification) and 2026-04 (+0.03% to +0.29%, cause
+    unconfirmed). Per-article daily and monthly data matched exactly (7 articles, 36 months).
+
 ## Access rules
 
 - **User-Agent is required** in the form `<client>/<version> (<contact>) <lib>/<version>`.

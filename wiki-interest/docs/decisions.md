@@ -200,6 +200,14 @@ Takeaways:
 - **Why:** no arbitrary number, and it is always defined. Showing raw numbers prevents
   "large" from misleading when every compared edition is small.
 
+### T5a. Revision: totals check with a 1% tolerance *(2026-09-27, found by the check itself)*
+- **Context:** the exact daily-vs-monthly check (T5) failed on the first live run. Every edition
+  checked differs in 2025-03 (about -0.12%) and 2026-04 (up to +0.29%).
+- **Choice:** accept gaps up to 1% and show them as a caveat. Larger gaps stop the run. Analyses
+  always use the daily sums, so numerator and denominator stay consistent.
+- **Why:** an exact rule would block every analysis. The gaps are far smaller than any effect we
+  report, and hiding them would be dishonest.
+
 ### T5. Defaults
 - **Spike detection:** a day counts as a spike when it exceeds the rolling ±14-day median by more
   than 5·MAD and is more than 2× that median. The report lists the top 3 spike dates. The model
@@ -253,6 +261,12 @@ and cheap follow-ups.
 - **To verify during implementation:** that the full daily history since 2015 comes back in
   one request. 10 years returned 3,653 rows.
 
+### I4a. Revision: outputs go to `./wiki-interest-runs/<run>/` *(2026-09-27)*
+- **Context:** I4 said `./wiki-interest/<run>/`. In this repo `./wiki-interest/` is the skill dir
+  itself, so dev runs from the repo root would have written outputs into the deliverable.
+- **Choice:** the default is `./wiki-interest-runs/<run>/` (gitignored), overridable with `--out`.
+  The run id is a UTC timestamp plus a short hash of the parameters.
+
 ### I5. Defaults
 - Every error ends with an actionable `Next:` line, e.g. an unknown edition code suggests the
   closest valid codes.
@@ -292,6 +306,18 @@ Layout (A4 portrait, one page):
 - Charts are produced by `analyze`, so they can be shown in chat; `report` reuses them.
 - **Rejected:** raw monthly lines (they mix seasonality and edition size); a log scale (misread by
   founders); a single chart (it loses the trust picture).
+
+### R2a. Chart details settled while building *(2026-09-27, dataviz skill checks)*
+- Colors follow the edition's position in `--editions`, never its rank. Coloring in result
+  order would repaint lines under `--sort` (the skill's "recolor-on-rank" anti-pattern).
+- Chart A marks spike months only for editions whose verdict is spike-driven. On a 12-month
+  rolling line, markers for every spike read as dashes and match no visible bump.
+- Chart B keeps the axis symmetric around 0 and puts verdict labels in the margin with fixed
+  margins. Stretching the axis to make room for labels implied values that don't exist.
+- Proxy editions are labeled "pl (proxy)" on both charts, where the reader sees the number.
+- Palette validated with the skill's checker: 8 categorical slots pass. The verdict colors are a
+  polarity encoding (blue/orange with a neutral gray), so gray failing the categorical chroma floor
+  is expected. Every row also states its verdict in words.
 
 ### R3. Code writes the numbers; the model writes the narrative, which gets checked
 - **Code:** numbers, the table, charts, caveats, method notes, the footer.

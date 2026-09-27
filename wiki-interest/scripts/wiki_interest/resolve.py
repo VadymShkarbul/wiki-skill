@@ -73,8 +73,8 @@ def parse_ref(text: str, catalog: Catalog) -> str | TitleRef | None:
     return None
 
 
-def resolve_title(client: JsonGetter, ref: TitleRef) -> str:
-    """Follow normalization and redirects, then return the article's Wikidata item."""
+def resolve_title(client: JsonGetter, ref: TitleRef) -> tuple[str, str]:
+    """Follow normalization and redirects; return the article's Wikidata item and its title."""
     data = action_api(
         client,
         ref.edition.api,
@@ -99,7 +99,7 @@ def resolve_title(client: JsonGetter, ref: TitleRef) -> str:
             "be matched across editions.",
             "Tell the user; pick another article or search by topic.",
         )
-    return qid
+    return qid, page["title"]
 
 
 def search_qids(client: JsonGetter, topic: str, lang: str, limit: int) -> list[tuple[str, bool]]:
@@ -222,7 +222,7 @@ def find_candidates(  # noqa: PLR0913 - mirrors the CLI flags one to one
     if isinstance(ref, str):
         hits = [(ref, True)]
     elif isinstance(ref, TitleRef):
-        hits = [(resolve_title(client, ref), True)]
+        hits = [(resolve_title(client, ref)[0], True)]
     else:
         hits = search_qids(client, topic, search_lang, limit)
         for lang in dict.fromkeys(e.lang for e in editions):

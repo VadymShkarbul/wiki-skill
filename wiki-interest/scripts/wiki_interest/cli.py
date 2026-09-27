@@ -12,10 +12,12 @@ from pathlib import Path
 from typing import NoReturn
 
 from wiki_interest import __version__
+from wiki_interest.analysis import DEFAULT_MONTHS, SORT_KEYS, run_analysis
 from wiki_interest.cache import Cache, default_cache_dir
 from wiki_interest.editions import load_catalog
 from wiki_interest.errors import SkillError
 from wiki_interest.http_client import HttpClient
+from wiki_interest.output import RUNS_DIR, save
 from wiki_interest.resolve import MAX_CANDIDATES, find_candidates, format_candidates
 
 EXIT_OK = 0
@@ -65,6 +67,24 @@ def _resolve(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
+def _analyze(args: argparse.Namespace) -> int:
+    client = make_client()
+    catalog = load_catalog(client)
+    editions = catalog.parse(args.editions)
+    analysis = run_analysis(
+        client,
+        catalog,
+        args.concepts,
+        editions,
+        months=args.months,
+        proxies=args.proxy,
+        sort=args.sort,
+    )
+    _, summary = save(analysis, Path(args.out), command_prefix())
+    print(summary)
+    return EXIT_OK
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = _Parser(prog=PROG, description="Wikipedia pageview interest analysis.")
     parser.add_argument("--version", action="version", version=f"wiki-interest {__version__}")
@@ -92,7 +112,28 @@ def build_parser() -> argparse.ArgumentParser:
     resolve.set_defaults(handler=_resolve)
 
     analyze = sub.add_parser("analyze", help="Fetch pageviews and compute verdicts and charts.")
-    analyze.set_defaults(handler=_not_implemented)
+    analyze.add_argument(
+        "--concepts",
+        nargs="+",
+        required=True,
+        help="Wikidata IDs from resolve (Q1666254), or lang:Title. Several = one broad topic.",
+    )
+    analyze.add_argument("--editions", required=True, help="Edition codes, e.g. pl,cs.")
+    analyze.add_argument(
+        "--months", type=int, default=DEFAULT_MONTHS, help="Trend window in months (default 24)."
+    )
+    analyze.add_argument(
+        "--proxy",
+        action="append",
+        default=[],
+        help="pl:Title (or Q123=pl:Title) for an edition without an article. Only if the user "
+        "agreed. Repeatable.",
+    )
+    analyze.add_argument("--sort", choices=SORT_KEYS, default="growth", help="Order of editions.")
+    analyze.add_argument(
+        "--out", default=RUNS_DIR, help=f"Folder for run outputs (default ./{RUNS_DIR})."
+    )
+    analyze.set_defaults(handler=_analyze)
 
     report = sub.add_parser("report", help="Render the one-page PDF report for a run.")
     report.set_defaults(handler=_not_implemented)

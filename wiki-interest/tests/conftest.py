@@ -1,9 +1,11 @@
 """Record/replay of API responses, so tests run offline and deterministically (decision S3).
 
-Each test module gets `tests/fixtures/<module>.json` mapping URL -> response entry.
+Each test module gets `tests/fixtures/<module>.json.gz` mapping URL -> response entry
+(gzip: daily pageview histories are large but compress about tenfold).
 Re-record from the live APIs with: WIKI_INTEREST_RECORD=1 pytest tests/<module>.py
 """
 
+import gzip
 import json
 import os
 from pathlib import Path
@@ -45,13 +47,12 @@ class RecordingClient:
 
 @pytest.fixture(scope="module")
 def api(request):
-    path = FIXTURES / f"{request.module.__name__.rsplit('.', 1)[-1]}.json"
-    entries = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    path = FIXTURES / f"{request.module.__name__.rsplit('.', 1)[-1]}.json.gz"
+    entries = json.loads(gzip.decompress(path.read_bytes())) if path.exists() else {}
     if not RECORDING:
         yield ReplayClient(entries)
         return
     yield RecordingClient(entries)
     FIXTURES.mkdir(exist_ok=True)
-    path.write_text(
-        json.dumps(entries, ensure_ascii=False, indent=0, sort_keys=True) + "\n", encoding="utf-8"
-    )
+    body = json.dumps(entries, ensure_ascii=False, sort_keys=True).encode()
+    path.write_bytes(gzip.compress(body, mtime=0))  # mtime=0: same data, same bytes
