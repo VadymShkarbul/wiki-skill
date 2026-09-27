@@ -14,16 +14,32 @@ from pathlib import Path
 from typing import Any
 
 
+def _writable(path: Path) -> bool:
+    try:
+        path.mkdir(parents=True, exist_ok=True)
+        probe = path / ".write-test"
+        probe.write_text("", encoding="utf-8")
+        probe.unlink()
+    except OSError:
+        return False
+    return True
+
+
 def default_cache_dir() -> Path:
     """Return the cache root.
 
     Precedence: ``$WIKI_INTEREST_CACHE_DIR``, then ``$XDG_CACHE_HOME/wiki-interest``,
-    then ``~/.cache/wiki-interest``.
+    then ``~/.cache/wiki-interest``. If that isn't writable (e.g. Codex's sandbox allows only
+    the workspace and /tmp), fall back to the system temp dir so caching still works.
     """
     if override := os.environ.get("WIKI_INTEREST_CACHE_DIR"):
-        return Path(override)
-    base = os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache"
-    return Path(base) / "wiki-interest"
+        chosen = Path(override)
+    else:
+        base = os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache"
+        chosen = Path(base) / "wiki-interest"
+    if _writable(chosen):
+        return chosen
+    return Path(tempfile.gettempdir()) / "wiki-interest-cache"
 
 
 class Cache:

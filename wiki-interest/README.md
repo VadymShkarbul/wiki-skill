@@ -17,11 +17,41 @@ next.
 
 ## Install
 
-Copy this folder to where your agent loads skills, e.g. `~/.claude/skills/wiki-interest/` or
-`.claude/skills/wiki-interest/` in a project (OpenCode reads the same paths). It needs
-[uv](https://docs.astral.sh/uv/) and internet access. Dependencies are pinned in
+Needs [uv](https://docs.astral.sh/uv/) and internet access. Dependencies are pinned in
 `scripts/wiki.py.lock` and installed on first run. Without uv, see
 [references/setup.md](references/setup.md).
+
+### Claude Code
+
+| Scope | How |
+|---|---|
+| Plugin (recommended) | `claude plugin marketplace add VadymShkarbul/wiki-skill` once the repo is on GitHub, or `claude plugin marketplace add /path/to/wiki-skill` from a local clone. Then `claude plugin install wiki-interest@wiki-skill`, or use `/plugin` inside Claude Code. The skill appears as `wiki-interest:wiki-interest`. |
+| Personal | `cp -R wiki-interest ~/.claude/skills/` (or symlink it: `ln -s "$PWD/wiki-interest" ~/.claude/skills/wiki-interest`) |
+| One project | Put it at `.claude/skills/wiki-interest/` in that repo |
+
+Verified on 2026-09-27 with Claude Code 2.1.267:
+- `claude plugin validate` passes for both `wiki-interest/` and the marketplace at the repo root;
+- a headless Haiku run with `--plugin-dir wiki-interest` answered correctly;
+- a symlinked project skill answered correctly.
+
+### Codex
+
+| Scope | How |
+|---|---|
+| Personal | `cp -R wiki-interest ~/.agents/skills/` |
+| One repo | Put it at `.agents/skills/wiki-interest/` in that repo |
+
+Codex reads the same `SKILL.md` format and picks the skill from its description, or you can
+mention it as `$wiki-interest`. Codex's default sandbox has **no network**, and it writes only to
+the workspace and `/tmp`, so approve the prompts for `uv run` or start Codex with
+`-c 'sandbox_workspace_write.network_access=true'` (details in
+[references/setup.md](references/setup.md)). The skill never writes into its own folder, so a
+read-only `.agents/` is fine. Not yet run end to end in Codex here (roadmap, E1).
+
+### Other agents
+
+OpenCode reads `.claude/skills/` and `.agents/skills/`. Any agent that supports Agent Skills and
+can run shell commands can use it.
 
 ## How it works
 

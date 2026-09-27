@@ -432,6 +432,24 @@ Evidence (2026-09-26, uv 0.8.18):
 - Lowercase with hyphens, and it matches the directory name. `wikipedia-interest` was avoided
   because a skill with that name is already installed in this environment.
 
+### S6. Distribution: a plain skill folder, plus a Claude Code plugin *(2026-09-27)*
+- **Choice:**
+  - `wiki-interest/` works as-is as a skill folder: Claude Code (`~/.claude/skills/`,
+    `.claude/skills/`), Codex (`~/.agents/skills/`, `.agents/skills/`), and OpenCode.
+  - For one-command installs in Claude Code, `wiki-interest/.claude-plugin/plugin.json` (with
+    `"skills": ["./"]`) makes the same folder a plugin. `.claude-plugin/marketplace.json` at the
+    repo root lists it.
+- **Why:** there is one source of truth, and the manifest sits inside the skill folder, so S4 holds.
+- **Verified:**
+  - `claude plugin validate` passes for both manifests;
+  - a headless Haiku run loaded it with `--plugin-dir` as `wiki-interest:wiki-interest` and
+    answered correctly;
+  - a symlinked project skill worked too.
+- **Codex:** not run here (not installed). Format and paths come from its docs. Its sandbox has no
+  network by default, so setup.md explains the approval and `network_access` options. The pageview
+  cache falls back to the temp dir when `~/.cache` isn't writable.
+- **Open:** a licence (none chosen yet), and a GitHub remote, which the marketplace command needs.
+
 ## Testing on a cheap model
 
 Evidence (2026-09-26, Claude Code 2.1.267):

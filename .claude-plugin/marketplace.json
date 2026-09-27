@@ -1,0 +1,14 @@
+{
+  "name": "wiki-skill",
+  "description": "Agent skills by Vadym Shkarbul. wiki-interest: Wikipedia pageview analysis for choosing topics and language markets.",
+  "owner": {
+    "name": "Vadym Shkarbul"
+  },
+  "plugins": [
+    {
+      "name": "wiki-interest",
+      "source": "./wiki-interest",
+      "description": "Wikipedia pageview interest analysis for topic and language-market decisions."
+    }
+  ]
+}

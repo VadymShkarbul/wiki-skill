@@ -1,3 +1,4 @@
+import tempfile
 from pathlib import Path
 
 from wiki_interest.cache import Cache, default_cache_dir
@@ -58,3 +59,11 @@ def test_default_dir_env_precedence(monkeypatch, tmp_path):
     assert default_cache_dir() == tmp_path / "xdg" / "wiki-interest"
     monkeypatch.delenv("XDG_CACHE_HOME")
     assert default_cache_dir() == Path.home() / ".cache" / "wiki-interest"
+
+
+def test_unwritable_default_falls_back_to_temp(monkeypatch, tmp_path):
+    blocker = tmp_path / "file"
+    blocker.write_text("", encoding="utf-8")
+    monkeypatch.setenv("WIKI_INTEREST_CACHE_DIR", str(blocker / "cache"))  # can't mkdir here
+    monkeypatch.setattr(tempfile, "gettempdir", lambda: str(tmp_path / "tmp"))
+    assert default_cache_dir() == tmp_path / "tmp" / "wiki-interest-cache"

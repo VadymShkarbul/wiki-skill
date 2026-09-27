@@ -13,6 +13,20 @@ Ask the user before installing anything. The official instructions are at
 https://docs.astral.sh/uv/getting-started/installation/ (for example `pip install uv`, or
 `brew install uv` on macOS).
 
+## In Codex (or another sandboxed agent)
+
+Codex's default sandbox (`workspace-write`) has **network off**, and it can write only to the
+workspace and `/tmp`. This skill needs the network (Wikimedia APIs, and uv's first download).
+uv also keeps its cache in `~/.cache/uv`. Either:
+
+- approve Codex's prompt when a `uv run` command needs network or the uv cache, or
+- start Codex with network enabled and uv's cache under `/tmp`:
+  `UV_CACHE_DIR=/tmp/uv-cache codex -c 'sandbox_workspace_write.network_access=true'`
+
+The skill's own pageview cache falls back to a folder in the system temp dir when
+`~/.cache/wiki-interest` isn't writable, and run outputs go to `./wiki-interest-runs/` in the
+workspace.
+
 ## Running without uv
 
 With Python 3.11 or newer, create a virtual environment and install the same pinned versions,
