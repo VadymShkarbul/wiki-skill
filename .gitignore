@@ -1,2 +1,5 @@
 .idea/
 .claude/skills/modern-python/
+__pycache__/
+.pytest_cache/
+.ruff_cache/

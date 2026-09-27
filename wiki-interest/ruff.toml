@@ -1,0 +1,26 @@
+line-length = 100
+target-version = "py311"
+
+[lint]
+select = ["ALL"]
+ignore = [
+    "D",       # docstrings where they add information, not on every function
+    "COM812",  # conflicts with the formatter
+    "ISC001",  # conflicts with the formatter
+    "T201",    # print is the CLI's output channel
+    "CPY001",  # no per-file copyright headers in this project
+    "ANN401",  # JSON payloads from the APIs are untyped by nature
+    "TRY003",  # SkillError messages are written at the failure site on purpose:
+    "EM101",   #   they are the agent-facing product (cause + next step), so keeping
+    "EM102",   #   them next to the code that knows the cause beats indirection
+]
+
+[lint.per-file-ignores]
+"tests/**" = [
+    "S101",    # assert is how pytest checks
+    "PLR2004", # expected values in tests are literals
+    "ANN",     # type annotations on tests add noise
+    "INP001",  # tests are not a package
+    "ARG",     # fakes accept the arguments of the real function
+    "SLF001",  # tests may inspect private state
+]
